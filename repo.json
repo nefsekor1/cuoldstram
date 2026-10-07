@@ -1,0 +1,8 @@
+{
+  "name": "FSMNK Özel TR Deposu",
+  "description": "FSMNK için özel Türkçe eklenti ve kaynak deposu (Film, Dizi, Anime, Canlı TV)",
+  "manifestVersion": 1,
+  "pluginLists": [
+    "https://raw.githubusercontent.com/nefsekor1/fsmnk-cs/builds/plugins.json"
+  ]
+}
