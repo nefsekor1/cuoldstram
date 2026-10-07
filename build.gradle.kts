@@ -36,7 +36,7 @@ subprojects {
 
     cloudstream {
         // GitHub Actions çalışırken GITHUB_REPOSITORY ortam değişkeni otomatik kullanılır
-        setRepo(System.getenv("GITHUB_REPOSITORY") ?: "https://github.com/nefsekor1/fsmnk-cs")
+        setRepo(System.getenv("GITHUB_REPOSITORY") ?: "https://github.com/nefsekor1/cuoldstram")
         authors = listOf("fsmnk")
     }
 

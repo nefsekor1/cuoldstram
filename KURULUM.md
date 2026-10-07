@@ -42,7 +42,7 @@ git push -u origin master
 1. [Cutt.ly](https://cutt.ly) sitesine gidin (ücretsiz bir hesap açabilirsiniz).
 2. Kısaltılacak URL kısmına kendi `repo.json` dosyanızın Raw linkini yapıştırın:
    ```
-   https://raw.githubusercontent.com/<GITHUB_KULLANICI_ADINIZ>/fsmnk-cs/master/repo.json
+   https://raw.githubusercontent.com/nefsekor1/cuoldstram/master/repo.json
    ```
 3. "Alias" (Özel Takma Ad / Custom name) kutucuğuna **`fsmnk`** yazın.
 4. Oluştur butonuna basın. Böylece `cutt.ly/fsmnk` adresi sizin deponuza bağlanmış olur!

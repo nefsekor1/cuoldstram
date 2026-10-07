@@ -10,7 +10,8 @@ Cloudstream uygulamasında uzun URL'ler yazmak yerine **`fsmnk`** kısa kodunu k
 
 ### Cloudstream Kısa Kod Sistemi Nasıl Çalışır?
 Cloudstream uygulamasında "Depo Ekle" alanına bir kelime yazdığınızda uygulama bunu otomatik olarak `https://cutt.ly/<KOD>` servisi üzerinden çözümler:
-1. Deponuzu GitHub'a yükledikten sonra `repo.json` dosyanızın Raw linkini alın.
+1. Deponuzu GitHub'a yükledikten sonra `repo.json` dosyanızın Raw linkini alın:
+   `https://raw.githubusercontent.com/nefsekor1/cuoldstram/master/repo.json`
 2. [cutt.ly](https://cutt.ly) sitesinden ücretsiz olarak bu linki kısaltın ve takma ad (custom alias) olarak **`fsmnk`** belirleyin (`cutt.ly/fsmnk`).
 3. Artık Cloudstream'e sadece **`fsmnk`** yazarak kendi özel deponuzu anında yükleyebilirsiniz!
 
