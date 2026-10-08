@@ -135,19 +135,168 @@ private fun Element.toSearchResult(): SearchResponse? {
     }
 
 
-    override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
+    private fun decodeRapidrameStream(arr: MutableList<String>): String? {
+        try {
+            val fd6 = arr.size - 2
+            val se8 = fd6 % 7
+            val u41hm = 8 + (fd6 % 5)
+
+            val o3o95 = arr.removeAt(u41hm)
+            val il4 = arr.removeAt(se8)
+
+            var bb21r = arr.joinToString("")
+            if (il4.length > 4096) {
+                bb21r = String(Base64.decode(bb21r, Base64.DEFAULT), Charsets.ISO_8859_1)
+            }
+
+            var kugz3 = 0
+            var l33 = 0
+            for (dx09 in il4.indices) {
+                val l1n = il4[dx09].code
+                kugz3 = (kugz3 * 37 + l1n) % 241
+                l33 = (l33 + ((l1n shl 1) xor dx09)) and 255
+            }
+
+            val up0 = (kugz3 * 3 + l33) % 256
+            val p81 = (l33 % 11) + 5
+            var g8doj = ((l33 * 251 + kugz3) % 65519) + 1
+
+            for (dx09 in o3o95.length - 1 downTo 0) {
+                val vz8 = o3o95[dx09]
+                if (vz8 == '7') {
+                    bb21r = String(Base64.decode(bb21r, Base64.DEFAULT), Charsets.ISO_8859_1)
+                } else if (vz8 == '3') {
+                    bb21r = bb21r.reversed()
+                } else {
+                    val r8yl = (26 - ((vz8.code - 96) % 26)) % 26
+                    val sb = StringBuilder()
+                    for (ch in bb21r) {
+                        if (ch in 'a'..'z' || ch in 'A'..'Z') {
+                            val ju22 = ch.code
+                            val j42uf = if (ju22 <= 90) 65 else 97
+                            sb.append(((ju22 - j42uf + r8yl) % 26 + j42uf).toChar())
+                        } else {
+                            sb.append(ch)
+                        }
+                    }
+                    bb21r = sb.toString()
+                }
+            }
+
+            if (o3o95.length > 2048) {
+                bb21r = bb21r.reversed()
+            }
+
+            val len = bb21r.length
+            val l1b = IntArray(len)
+            for (dx09 in len - 1 downTo 1) {
+                g8doj = (g8doj * 97 + 41) % 65519
+                l1b[dx09] = g8doj % (dx09 + 1)
+            }
+
+            val e7j = bb21r.toCharArray()
+            for (dx09 in 1 until len) {
+                val oi4 = l1b[dx09]
+                val hh1b = e7j[dx09]
+                e7j[dx09] = e7j[oi4]
+                e7j[oi4] = hh1b
+            }
+            bb21r = String(e7j)
+
+            var o8br = up0
+            val sb = StringBuilder()
+            for (dx09 in bb21r.indices) {
+                val l1n = bb21r[dx09].code
+                o8br = (o8br * 5 + p81) % 256
+                sb.append((l1n xor o8br).toChar())
+                o8br = (o8br + l1n) % 256
+            }
+
+            val result = sb.toString()
+            return if (result.startsWith("http")) result else null
+        } catch (e: Exception) {
+            Log.e("FLMM", "decodeRapidrameStream error: ${e.message}")
+            return null
+        }
+    }
+
+    override suspend fun loadLinks(
+        data: String,
+        isCasting: Boolean,
+        subtitleCallback: (SubtitleFile) -> Unit,
+        callback: (ExtractorLink) -> Unit
+    ): Boolean {
         Log.d("FLMM", "data » $data")
-        val document      = app.get(data).document
-        val iframeSrc = document.selectFirst("iframe")?.attr("data-src") ?: ""
+        val document = app.get(data).document
 
-        val videoUrls = document.select(".video-parts a[data-video_url]").map { it.attr("data-video_url") }
+        val iframes = document.select("iframe").mapNotNull {
+            val src = it.attr("data-src").ifEmpty { it.attr("src") }
+            src.takeIf { s -> s.isNotBlank() }
+        }
+        val videoParts = document.select(".video-parts a[data-video_url]").mapNotNull {
+            it.attr("data-video_url").takeIf { s -> s.isNotBlank() }
+        }
 
-        val allUrls = (if (iframeSrc.isNotEmpty()) listOf(iframeSrc) else emptyList()) + videoUrls
+        val allUrls = (iframes + videoParts).distinct().filter { !it.contains("youtube") }
+        var linkFound = false
 
         allUrls.forEach { url ->
             Log.d("FLMM", "Processing URL: $url")
-            loadExtractor(url, "${mainUrl}/", subtitleCallback, callback)
+            try {
+                if (url.contains("closeload")) {
+                    val resp = app.get(url, headers = mapOf("Referer" to "${mainUrl}/", "User-Agent" to USER_AGENT)).text
+                    val match = Regex("""["']([a-zA-Z0-9+/=~]{50,})["']\.split\(\s*["']~["']\s*\)""").find(resp)
+                    if (match != null) {
+                        val encodedStr = match.groupValues[1]
+                        val streamUrl = decodeRapidrameStream(encodedStr.split("~").toMutableList())
+                        if (streamUrl != null) {
+                            callback.invoke(
+                                newExtractorLink(
+                                    source = "${this.name} - Closeload",
+                                    name = "${this.name} - Closeload",
+                                    url = streamUrl,
+                                    type = ExtractorLinkType.M3U8
+                                ) {
+                                    this.headers = mapOf("Referer" to url, "User-Agent" to USER_AGENT)
+                                    this.quality = Qualities.P1080.value
+                                }
+                            )
+                            linkFound = true
+                        }
+                    }
+                } else if (url.contains("rapid")) {
+                    val resp = app.get(url, headers = mapOf("Referer" to "${mainUrl}/", "User-Agent" to USER_AGENT)).text
+                    val unpacked = try { getAndUnpack(resp) } catch (e: Exception) { resp }
+                    val match = Regex("""["']([a-zA-Z0-9+/=^]{50,})["']\.split\(\s*["']\^["']\s*\)""").find(unpacked)
+                        ?: Regex("""["']([a-zA-Z0-9+/=^]{50,})["']\.split\(\s*["']\^["']\s*\)""").find(resp)
+                    if (match != null) {
+                        val encodedStr = match.groupValues[1]
+                        val streamUrl = decodeRapidrameStream(encodedStr.split("^").toMutableList())
+                        if (streamUrl != null) {
+                            callback.invoke(
+                                newExtractorLink(
+                                    source = "${this.name} - Rapidrame",
+                                    name = "${this.name} - Rapidrame",
+                                    url = streamUrl,
+                                    type = ExtractorLinkType.M3U8
+                                ) {
+                                    this.headers = mapOf("Referer" to url, "User-Agent" to USER_AGENT)
+                                    this.quality = Qualities.P1080.value
+                                }
+                            )
+                            linkFound = true
+                        }
+                    }
+                } else {
+                    loadExtractor(url, "${mainUrl}/", subtitleCallback) { link ->
+                        linkFound = true
+                        callback(link)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("FLMM", "Error extracting $url: ${e.message}")
+            }
         }
-        return allUrls.isNotEmpty()
-}
+        return linkFound
+    }
 }

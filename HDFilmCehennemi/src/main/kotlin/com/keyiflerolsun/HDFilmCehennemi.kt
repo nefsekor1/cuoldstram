@@ -224,14 +224,115 @@ class HDFilmCehennemi : MainAPI() {
              return hdchLink
         }
 
+    private fun decodeRapidrameStream(arr: MutableList<String>): String? {
+        try {
+            val fd6 = arr.size - 2
+            val se8 = fd6 % 7
+            val u41hm = 8 + (fd6 % 5)
+
+            val o3o95 = arr.removeAt(u41hm)
+            val il4 = arr.removeAt(se8)
+
+            var bb21r = arr.joinToString("")
+            if (il4.length > 4096) {
+                bb21r = String(android.util.Base64.decode(bb21r, android.util.Base64.DEFAULT), Charsets.ISO_8859_1)
+            }
+
+            var kugz3 = 0
+            var l33 = 0
+            for (dx09 in il4.indices) {
+                val l1n = il4[dx09].code
+                kugz3 = (kugz3 * 37 + l1n) % 241
+                l33 = (l33 + ((l1n shl 1) xor dx09)) and 255
+            }
+
+            val up0 = (kugz3 * 3 + l33) % 256
+            val p81 = (l33 % 11) + 5
+            var g8doj = ((l33 * 251 + kugz3) % 65519) + 1
+
+            for (dx09 in o3o95.length - 1 downTo 0) {
+                val vz8 = o3o95[dx09]
+                if (vz8 == '7') {
+                    bb21r = String(android.util.Base64.decode(bb21r, android.util.Base64.DEFAULT), Charsets.ISO_8859_1)
+                } else if (vz8 == '3') {
+                    bb21r = bb21r.reversed()
+                } else {
+                    val r8yl = (26 - ((vz8.code - 96) % 26)) % 26
+                    val sb = StringBuilder()
+                    for (ch in bb21r) {
+                        if (ch in 'a'..'z' || ch in 'A'..'Z') {
+                            val ju22 = ch.code
+                            val j42uf = if (ju22 <= 90) 65 else 97
+                            sb.append(((ju22 - j42uf + r8yl) % 26 + j42uf).toChar())
+                        } else {
+                            sb.append(ch)
+                        }
+                    }
+                    bb21r = sb.toString()
+                }
+            }
+
+            if (o3o95.length > 2048) {
+                bb21r = bb21r.reversed()
+            }
+
+            val len = bb21r.length
+            val l1b = IntArray(len)
+            for (dx09 in len - 1 downTo 1) {
+                g8doj = (g8doj * 97 + 41) % 65519
+                l1b[dx09] = g8doj % (dx09 + 1)
+            }
+
+            val e7j = bb21r.toCharArray()
+            for (dx09 in 1 until len) {
+                val oi4 = l1b[dx09]
+                val hh1b = e7j[dx09]
+                e7j[dx09] = e7j[oi4]
+                e7j[oi4] = hh1b
+            }
+            bb21r = String(e7j)
+
+            var o8br = up0
+            val sb = StringBuilder()
+            for (dx09 in bb21r.indices) {
+                val l1n = bb21r[dx09].code
+                o8br = (o8br * 5 + p81) % 256
+                sb.append((l1n xor o8br).toChar())
+                o8br = (o8br + l1n) % 256
+            }
+
+            val result = sb.toString()
+            return if (result.startsWith("http")) result else null
+        } catch (e: Exception) {
+            Log.e("HDCH", "decodeRapidrameStream error: ${e.message}")
+            return null
+        }
+    }
+
     private suspend fun invokeLocalSource(source: String, url: String, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit ) {
-        val script    = app.get(url, referer = "${mainUrl}/", interceptor = interceptor).document.select("script").find { it.data().contains("sources:") }?.data() ?: return
-		Log.d("HDCH", "script » $script")
-        val videoData = getAndUnpack(script).substringAfter("file_link=\"").substringBefore("\";")
-		Log.d("HDCH", "videoData » $videoData")
-        val base64Input = videoData.substringAfter("dc_hello(\"").substringBefore("\");")
-        val lastUrl = dcHello(base64Input).substringAfter("https").let { "https$it" }
-        val subData   = script.substringAfter("tracks: [").substringBefore("]")
+        val pageText = app.get(url, referer = "${mainUrl}/", interceptor = interceptor).text
+        val script = Jsoup.parse(pageText).select("script").find { it.data().contains("sources:") || it.data().contains("jwplayer") }?.data() ?: pageText
+        Log.d("HDCH", "script » $script")
+        val unpacked = try { getAndUnpack(script) } catch (e: Exception) { script }
+        
+        var lastUrl: String? = null
+        val matchHat = Regex("""["']([a-zA-Z0-9+/=^]{50,})["']\.split\(\s*["']\^["']\s*\)""").find(unpacked)
+            ?: Regex("""["']([a-zA-Z0-9+/=^]{50,})["']\.split\(\s*["']\^["']\s*\)""").find(pageText)
+        val matchTilde = Regex("""["']([a-zA-Z0-9+/=~]{50,})["']\.split\(\s*["']~["']\s*\)""").find(unpacked)
+            ?: Regex("""["']([a-zA-Z0-9+/=~]{50,})["']\.split\(\s*["']~["']\s*\)""").find(pageText)
+
+        if (matchHat != null) {
+            lastUrl = decodeRapidrameStream(matchHat.groupValues[1].split("^").toMutableList())
+        } else if (matchTilde != null) {
+            lastUrl = decodeRapidrameStream(matchTilde.groupValues[1].split("~").toMutableList())
+        } else if (unpacked.contains("dc_hello(")) {
+            val videoData = unpacked.substringAfter("file_link=\"").substringBefore("\";")
+            val base64Input = videoData.substringAfter("dc_hello(\"").substringBefore("\");")
+            lastUrl = dcHello(base64Input).substringAfter("https").let { "https$it" }
+        }
+
+        if (lastUrl == null || !lastUrl.startsWith("http")) return
+        val subData = (if (unpacked.contains("tracks: [")) unpacked else script).substringAfter("tracks: [").substringBefore("]")
 		Log.d("HDCH", "subData » $subData")
         AppUtils.tryParseJson<List<SubSource>>("[${subData}]")?.filter { it.kind == "captions"}?.map {
             val subtitleUrl = "${mainUrl}${it.file}/"
