@@ -316,15 +316,13 @@ class HDFilmCehennemi : MainAPI() {
         val unpacked = try { getAndUnpack(script) } catch (e: Exception) { script }
         
         var lastUrl: String? = null
-        val matchHat = Regex("""["']([a-zA-Z0-9+/=^]{50,})["']\.split\(\s*["']\^["']\s*\)""").find(unpacked)
-            ?: Regex("""["']([a-zA-Z0-9+/=^]{50,})["']\.split\(\s*["']\^["']\s*\)""").find(pageText)
-        val matchTilde = Regex("""["']([a-zA-Z0-9+/=~]{50,})["']\.split\(\s*["']~["']\s*\)""").find(unpacked)
-            ?: Regex("""["']([a-zA-Z0-9+/=~]{50,})["']\.split\(\s*["']~["']\s*\)""").find(pageText)
+        val universalMatch = Regex("""["']([^"']{40,})["']\.split\(\s*["']([^"'])["']\s*\)""").find(unpacked)
+            ?: Regex("""["']([^"']{40,})["']\.split\(\s*["']([^"'])["']\s*\)""").find(pageText)
 
-        if (matchHat != null) {
-            lastUrl = decodeRapidrameStream(matchHat.groupValues[1].split("^").toMutableList())
-        } else if (matchTilde != null) {
-            lastUrl = decodeRapidrameStream(matchTilde.groupValues[1].split("~").toMutableList())
+        if (universalMatch != null) {
+            val rawStr = universalMatch.groupValues[1].replace("\\/", "/")
+            val delim = universalMatch.groupValues[2]
+            lastUrl = decodeRapidrameStream(rawStr.split(delim).toMutableList())
         } else if (unpacked.contains("dc_hello(")) {
             val videoData = unpacked.substringAfter("file_link=\"").substringBefore("\";")
             val base64Input = videoData.substringAfter("dc_hello(\"").substringBefore("\");")
@@ -357,8 +355,8 @@ class HDFilmCehennemi : MainAPI() {
                 url     = lastUrl,
                 type    = ExtractorLinkType.M3U8
 			) {
-                headers = mapOf("Referer" to "${mainUrl}/", "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Norton/124.0.0.0")
-                quality = Qualities.Unknown.value
+                headers = mapOf("Referer" to url, "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36")
+                quality = Qualities.P1080.value
             }
         )
     }
@@ -387,13 +385,23 @@ override suspend fun loadLinks(
                 referer = data
             ).text
             Log.d("HDCH", "Found videoID: $videoID")
-            var iframe = Regex("""data-src=\\"([^"]+)""").find(apiGet)?.groupValues?.get(1)!!.replace("\\", "")
-            Log.d("HDCH", "$iframe » $iframe")
-            if (iframe.contains("rapidrame")) {
-                iframe = "${mainUrl}/rplayer/" + iframe.substringAfter("?rapidrame_id=")
+            val rawIframe = Regex("""(?:data-src|src)=\\?["']([^"']+)""").find(apiGet)?.groupValues?.get(1)?.replace("\\", "") ?: return@forEach
+            var iframe = rawIframe
+            Log.d("HDCH", "rawIframe » $rawIframe")
+            if (iframe.contains("rapidrame_id=")) {
+                val rapidId = iframe.substringAfter("rapidrame_id=").substringBefore("&").removeSuffix("/")
+                iframe = "${mainUrl}/rplayer/$rapidId/"
             } else if (iframe.contains("mobi")) {
                 val iframeDoc = Jsoup.parse(apiGet)
-                iframe = fixUrlNull(iframeDoc.selectFirst("iframe")?.attr("data-src")) ?: return@forEach
+                val mobiSrc = fixUrlNull(iframeDoc.selectFirst("iframe")?.attr("data-src")) ?: return@forEach
+                if (mobiSrc.contains("rapidrame_id=")) {
+                    val rapidId = mobiSrc.substringAfter("rapidrame_id=").substringBefore("&").removeSuffix("/")
+                    iframe = "${mainUrl}/rplayer/$rapidId/"
+                } else {
+                    iframe = mobiSrc
+                }
+            } else if (!iframe.startsWith("http")) {
+                iframe = fixUrl(iframe)
             }
             Log.d("HDCH", "$source » $videoID » $iframe")
             invokeLocalSource(source, iframe, subtitleCallback, callback)

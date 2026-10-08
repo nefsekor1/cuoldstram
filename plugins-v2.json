@@ -20,7 +20,7 @@
   {
     "name": "HDFilmCehennemi",
     "internalName": "HDFilmCehennemi",
-    "version": 26,
+    "version": 27,
     "description": "HDFilmCehennemi - Türkiye'nin en popüler film ve dizi izleme sitesi",
     "authors": [
       "fsmnk"
@@ -39,7 +39,7 @@
   {
     "name": "FilmMakinesi",
     "internalName": "FilmMakinesi",
-    "version": 42,
+    "version": 43,
     "description": "FilmMakinesi - En yeni ve en güncel filmler",
     "authors": [
       "fsmnk"

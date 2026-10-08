@@ -237,46 +237,27 @@ private fun Element.toSearchResult(): SearchResponse? {
             it.attr("data-video_url").takeIf { s -> s.isNotBlank() }
         }
 
-        val allUrls = (iframes + videoParts).distinct().filter { !it.contains("youtube") }
+        val allUrls = (iframes + videoParts).distinct().filter { !it.contains("youtube") }.map { fixUrl(it) }
         var linkFound = false
 
         allUrls.forEach { url ->
             Log.d("FLMM", "Processing URL: $url")
             try {
-                if (url.contains("closeload")) {
-                    val resp = app.get(url, headers = mapOf("Referer" to "${mainUrl}/", "User-Agent" to USER_AGENT)).text
-                    val match = Regex("""["']([a-zA-Z0-9+/=~]{50,})["']\.split\(\s*["']~["']\s*\)""").find(resp)
-                    if (match != null) {
-                        val encodedStr = match.groupValues[1]
-                        val streamUrl = decodeRapidrameStream(encodedStr.split("~").toMutableList())
-                        if (streamUrl != null) {
-                            callback.invoke(
-                                newExtractorLink(
-                                    source = "${this.name} - Closeload",
-                                    name = "${this.name} - Closeload",
-                                    url = streamUrl,
-                                    type = ExtractorLinkType.M3U8
-                                ) {
-                                    this.headers = mapOf("Referer" to url, "User-Agent" to USER_AGENT)
-                                    this.quality = Qualities.P1080.value
-                                }
-                            )
-                            linkFound = true
-                        }
-                    }
-                } else if (url.contains("rapid")) {
+                if (url.contains("closeload") || url.contains("rapid")) {
                     val resp = app.get(url, headers = mapOf("Referer" to "${mainUrl}/", "User-Agent" to USER_AGENT)).text
                     val unpacked = try { getAndUnpack(resp) } catch (e: Exception) { resp }
-                    val match = Regex("""["']([a-zA-Z0-9+/=^]{50,})["']\.split\(\s*["']\^["']\s*\)""").find(unpacked)
-                        ?: Regex("""["']([a-zA-Z0-9+/=^]{50,})["']\.split\(\s*["']\^["']\s*\)""").find(resp)
+                    val match = Regex("""["']([^"']{40,})["']\.split\(\s*["']([^"'])["']\s*\)""").find(unpacked)
+                        ?: Regex("""["']([^"']{40,})["']\.split\(\s*["']([^"'])["']\s*\)""").find(resp)
                     if (match != null) {
-                        val encodedStr = match.groupValues[1]
-                        val streamUrl = decodeRapidrameStream(encodedStr.split("^").toMutableList())
-                        if (streamUrl != null) {
+                        val rawStr = match.groupValues[1].replace("\\/", "/")
+                        val delim = match.groupValues[2]
+                        val streamUrl = decodeRapidrameStream(rawStr.split(delim).toMutableList())
+                        if (streamUrl != null && streamUrl.startsWith("http")) {
+                            val sourceName = if (url.contains("closeload")) "Closeload" else "Rapidrame"
                             callback.invoke(
                                 newExtractorLink(
-                                    source = "${this.name} - Rapidrame",
-                                    name = "${this.name} - Rapidrame",
+                                    source = "${this.name} - $sourceName",
+                                    name = "${this.name} - $sourceName",
                                     url = streamUrl,
                                     type = ExtractorLinkType.M3U8
                                 ) {
