@@ -3,6 +3,7 @@
   "description": "FSMNK için özel Türkçe eklenti ve kaynak deposu (Film, Dizi, Anime, Canlı TV)",
   "manifestVersion": 1,
   "pluginLists": [
+    "https://raw.githubusercontent.com/Kraptor123/cs-kraptor/builds/plugins.json",
     "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/plugins.json"
   ]
 }
