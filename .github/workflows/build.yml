@@ -36,9 +36,8 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Android Lisanslarını Kabul Et
-        run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
+      - name: Android SDK Ayarla
+        uses: android-actions/setup-android@v3
 
       - name: Eklentileri Derle (.cs3 & plugins.json)
         run: |

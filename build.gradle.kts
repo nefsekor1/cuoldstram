@@ -12,8 +12,8 @@ buildscript {
 
     dependencies {
         classpath("com.android.tools.build:gradle:8.7.3")
-        classpath("com.github.recloudstream:gradle:master-SNAPSHOT")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.4.10")
+        classpath("com.github.recloudstream.gradle:gradle:master-32895aedb6-1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.0")
     }
 }
 
@@ -51,37 +51,34 @@ subprojects {
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
+            sourceCompatibility = JavaVersion.VERSION_1_8
+            targetCompatibility = JavaVersion.VERSION_1_8
         }
 
         tasks.withType<KotlinJvmCompile> {
             compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_11)
+                jvmTarget.set(JvmTarget.JVM_1_8)
                 freeCompilerArgs.addAll(
-                    listOf(
-                        "-Xno-call-assertions",
-                        "-Xno-param-assertions",
-                        "-Xno-receiver-assertions",
-                        "-Xskip-metadata-version-check"
-                    )
+                    "-Xno-call-assertions",
+                    "-Xno-param-assertions",
+                    "-Xno-receiver-assertions"
                 )
             }
         }
     }
 
     dependencies {
-        val cloudstream by configurations
         val implementation by configurations
 
-        // Cloudstream ana API sınıfları
-        cloudstream("com.lagradost:cloudstream3:pre-release")
+        // Cloudstream ana kütüphane API
+        implementation("com.github.recloudstream.cloudstream:library:-SNAPSHOT")
 
         // Standart eklenti kütüphaneleri
         implementation(kotlin("stdlib"))
         implementation("com.github.Blatzar:NiceHttp:0.4.11")
         implementation("org.jsoup:jsoup:1.18.3")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1")
+        implementation("com.github.teamnewpipe:NewPipeExtractor:v0.25.2")
     }
 }
 
