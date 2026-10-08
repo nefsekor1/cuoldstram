@@ -42,6 +42,7 @@ jobs:
 
       - name: Eklentileri Derle (.cs3 & plugins.json)
         run: |
+          set -e -o pipefail
           cd $GITHUB_WORKSPACE/src
           chmod +x gradlew
           ./gradlew make makePluginsJson --stacktrace --no-daemon 2>&1 | tee $GITHUB_WORKSPACE/build.log
@@ -49,7 +50,8 @@ jobs:
           find $GITHUB_WORKSPACE/src -name "*.cs3"
           mkdir -p $GITHUB_WORKSPACE/builds
           find $GITHUB_WORKSPACE/src -name "*.cs3" -exec cp -v {} $GITHUB_WORKSPACE/builds/ \;
-          cp -v build/plugins.json $GITHUB_WORKSPACE/builds/ || true
+          [ -f $GITHUB_WORKSPACE/src/build/plugins.json ] && cp -v $GITHUB_WORKSPACE/src/build/plugins.json $GITHUB_WORKSPACE/builds/ || true
+          [ -f $GITHUB_WORKSPACE/src/plugins.json ] && cp -v $GITHUB_WORKSPACE/src/plugins.json $GITHUB_WORKSPACE/builds/ || true
           echo "=== BUILDS KLASÖRÜNDEKİ DOSYALAR ==="
           ls -la $GITHUB_WORKSPACE/builds
 
