@@ -51,27 +51,29 @@ subprojects {
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
         }
 
         tasks.withType<KotlinJvmCompile> {
             compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_1_8)
+                jvmTarget.set(JvmTarget.JVM_11)
                 freeCompilerArgs.addAll(
                     "-Xno-call-assertions",
                     "-Xno-param-assertions",
-                    "-Xno-receiver-assertions"
+                    "-Xno-receiver-assertions",
+                    "-Xskip-metadata-version-check"
                 )
             }
         }
     }
 
     dependencies {
+        val cloudstream by configurations
         val implementation by configurations
 
-        // Cloudstream ana kütüphane API
-        implementation("com.github.recloudstream.cloudstream:library:-SNAPSHOT")
+        // Cloudstream ana API sınıfları (CloudstreamConfigurationProvider indirir)
+        cloudstream("com.lagradost:cloudstream3:pre-release")
 
         // Standart eklenti kütüphaneleri
         implementation(kotlin("stdlib"))
