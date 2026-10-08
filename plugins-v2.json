@@ -13,7 +13,7 @@
       "Live"
     ],
     "iconUrl": "https://www.google.com/s2/favicons?domain=canlitv.me&sz=256",
-    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/CanliTV.cs3",
+    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/CanliTV.cs3?v=12",
     "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
     "apiVersion": 1
   },
@@ -32,7 +32,7 @@
       "TvSeries"
     ],
     "iconUrl": "https://www.google.com/s2/favicons?domain=hdfilmcehennemi.nl&sz=256",
-    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/HDFilmCehennemi.cs3",
+    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/HDFilmCehennemi.cs3?v=28",
     "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
     "apiVersion": 1
   },
@@ -50,7 +50,7 @@
       "Movie"
     ],
     "iconUrl": "https://www.google.com/s2/favicons?domain=filmmakinesi.to&sz=256",
-    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FilmMakinesi.cs3",
+    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FilmMakinesi.cs3?v=44",
     "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
     "apiVersion": 1
   },
