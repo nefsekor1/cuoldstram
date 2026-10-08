@@ -1,7 +1,7 @@
 {
   "name": "FSMNK Bağımsız TR Deposu",
   "description": "FSMNK için tamamen bağımsız Türkçe eklenti ve kaynak deposu (Film, Dizi, Anime, Canlı TV)",
-  "manifestVersion": 1,
+  "manifestVersion": 2,
   "pluginLists": [
     "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/plugins.json"
   ]
