@@ -124,7 +124,8 @@ class HDFilmCehennemi : MainAPI() {
     override suspend fun search(query: String): List<SearchResponse> {
         val response      = app.get(
             "${mainUrl}/search?q=${query}",
-            headers = mapOf("X-Requested-With" to "fetch")
+            headers = mapOf("X-Requested-With" to "fetch"),
+            interceptor = interceptor
         ).parsedSafe<Results>() ?: return emptyList()
         val searchResults = mutableListOf<SearchResponse>()
 
@@ -167,8 +168,6 @@ class HDFilmCehennemi : MainAPI() {
             }
 
         return if (tvType == TvType.TvSeries) {
-            val trailer  = document.selectFirst("div.post-info-trailer button")?.attr("data-modal")?.substringAfter("trailer/", "")?.let { if (it.isNotEmpty()) "https://www.youtube.com/watch?v=$it" else null }
-            Log.d("HDCH", "Trailer: $trailer")
             val episodes = document.select("div.seasons-tab-content a").mapNotNull {
                 val epName    = it.selectFirst("h4")?.text()?.trim() ?: return@mapNotNull null
                 val epHref    = fixUrlNull(it.attr("href")) ?: return@mapNotNull null
@@ -189,11 +188,8 @@ class HDFilmCehennemi : MainAPI() {
                 this.tags            = tags
                 this.recommendations = recommendations
                 addActors(actors)
-                addTrailer(trailer)
             }
         } else {
-            val trailer = document.selectFirst("div.post-info-trailer button")?.attr("data-modal")?.substringAfter("trailer/", "")?.let { if (it.isNotEmpty()) "https://www.youtube.com/watch?v=$it" else null }
-            Log.d("HDCH", "Trailer: $trailer")
             newMovieLoadResponse(title, url, TvType.Movie, url) {
                 this.posterUrl       = poster
                 this.year            = year
@@ -201,7 +197,22 @@ class HDFilmCehennemi : MainAPI() {
                 this.tags            = tags
                 this.recommendations = recommendations
                 addActors(actors)
-                addTrailer(trailer)
+            }
+        }
+    }
+
+    private fun safeBase64Decode(str: String): String {
+        return try {
+            String(android.util.Base64.decode(str, android.util.Base64.DEFAULT), Charsets.ISO_8859_1)
+        } catch (e: Exception) {
+            try {
+                String(android.util.Base64.decode(str, android.util.Base64.URL_SAFE), Charsets.ISO_8859_1)
+            } catch (e2: Exception) {
+                try {
+                    String(android.util.Base64.decode(str, android.util.Base64.NO_PADDING), Charsets.ISO_8859_1)
+                } catch (e3: Exception) {
+                    str
+                }
             }
         }
     }
@@ -235,7 +246,7 @@ class HDFilmCehennemi : MainAPI() {
 
             var bb21r = arr.joinToString("")
             if (il4.length > 4096) {
-                bb21r = String(android.util.Base64.decode(bb21r, android.util.Base64.DEFAULT), Charsets.ISO_8859_1)
+                bb21r = safeBase64Decode(bb21r)
             }
 
             var kugz3 = 0
@@ -253,7 +264,7 @@ class HDFilmCehennemi : MainAPI() {
             for (dx09 in o3o95.length - 1 downTo 0) {
                 val vz8 = o3o95[dx09]
                 if (vz8 == '7') {
-                    bb21r = String(android.util.Base64.decode(bb21r, android.util.Base64.DEFAULT), Charsets.ISO_8859_1)
+                    bb21r = safeBase64Decode(bb21r)
                 } else if (vz8 == '3') {
                     bb21r = bb21r.reversed()
                 } else {

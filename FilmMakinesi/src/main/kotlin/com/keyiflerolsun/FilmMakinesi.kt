@@ -4,11 +4,14 @@ package com.keyiflerolsun
 
 import android.util.Base64
 import android.util.Log
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
-import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
+import com.lagradost.cloudstream3.network.CloudflareKiller
+import okhttp3.Interceptor
+import okhttp3.Response
 
 
 class FilmMakinesi : MainAPI() {
@@ -21,8 +24,25 @@ class FilmMakinesi : MainAPI() {
 
     // ! CloudFlare bypass
     override var sequentialMainPage            = true // * https://recloudstream.github.io/dokka/-cloudstream/com.lagradost.cloudstream3/-main-a-p-i/index.html#-2049735995%2FProperties%2F101969414
-    override var sequentialMainPageDelay       = 50L  // ? 0.05 saniye
-    override var sequentialMainPageScrollDelay = 50L  // ? 0.05 saniye
+    override var sequentialMainPageDelay       = 150L  // ? 0.15 saniye
+    override var sequentialMainPageScrollDelay = 150L  // ? 0.15 saniye
+
+    private val cloudflareKiller by lazy { CloudflareKiller() }
+    private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
+
+    class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller): Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request  = chain.request()
+            val response = chain.proceed(request)
+            val doc      = Jsoup.parse(response.peekBody(1024 * 1024).string())
+
+            if (doc.html().contains("Just a moment") || response.code in listOf(403, 503)) {
+                return cloudflareKiller.intercept(chain)
+            }
+
+            return response
+        }
+    }
 
     override val mainPage = mainPageOf(
         "${mainUrl}/filmler-1/sayfa/"                                to "Son Filmler",
@@ -59,7 +79,7 @@ val url = if (page > 1) {
 val document = app.get(url, headers = mapOf(
     "User-Agent" to USER_AGENT,
     "Referer" to mainUrl
-)).document
+), interceptor = interceptor).document
 
     val home = document.select("div.film-list div.item-relative")
         .mapNotNull { it.toSearchResult() }
@@ -89,7 +109,7 @@ private fun Element.toSearchResult(): SearchResponse? {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.get("${mainUrl}/arama/?s=${query}").document
+        val document = app.get("${mainUrl}/arama/?s=${query}", interceptor = interceptor).document
 
         return document.select("div.film-list div.item-relative").mapNotNull { it.toSearchResult() }
     }
@@ -97,7 +117,7 @@ private fun Element.toSearchResult(): SearchResponse? {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        val document = app.get(url, interceptor = interceptor).document
 
         val title           = document.selectFirst("h1")?.text()?.trim() ?: return null
         val poster          = fixUrlNull(document.selectFirst("[property='og:image']")?.attr("content"))
@@ -106,7 +126,6 @@ private fun Element.toSearchResult(): SearchResponse? {
         val year            = document.selectFirst("dt:contains(Yapım Yılı:) + dd")?.text()?.trim()?.toIntOrNull()
 
         val durationElement = document.select("dt:contains(Film Süresi:) + dd time").attr("datetime")
-        // ? ISO 8601 süre formatını ayrıştırma (örneğin "PT129M")
         val duration        = if (durationElement.startsWith("PT") && durationElement.endsWith("M")) {
             durationElement.drop(2).dropLast(1).toIntOrNull() ?: 0
         } else {
@@ -118,10 +137,6 @@ private fun Element.toSearchResult(): SearchResponse? {
             Actor(it.trim())
         }
 
-        val trailer = document.selectFirst("div.left a.trailer-button")?.attr("data-video_url")?.substringAfter("embed/", "")?.let { 
-    if (it.isNotEmpty()) "https://www.youtube.com/watch?v=$it" else null 
-}
-
         return newMovieLoadResponse(title, url, TvType.Movie, url) {
             this.posterUrl       = poster
             this.year            = year
@@ -130,10 +145,24 @@ private fun Element.toSearchResult(): SearchResponse? {
             this.duration        = duration
             this.recommendations = recommendations
             addActors(actors)
-            addTrailer(trailer)
         }
     }
 
+    private fun safeBase64Decode(str: String): String {
+        return try {
+            String(Base64.decode(str, Base64.DEFAULT), Charsets.ISO_8859_1)
+        } catch (e: Exception) {
+            try {
+                String(Base64.decode(str, Base64.URL_SAFE), Charsets.ISO_8859_1)
+            } catch (e2: Exception) {
+                try {
+                    String(Base64.decode(str, Base64.NO_PADDING), Charsets.ISO_8859_1)
+                } catch (e3: Exception) {
+                    str
+                }
+            }
+        }
+    }
 
     private fun decodeRapidrameStream(arr: MutableList<String>): String? {
         try {
@@ -146,7 +175,7 @@ private fun Element.toSearchResult(): SearchResponse? {
 
             var bb21r = arr.joinToString("")
             if (il4.length > 4096) {
-                bb21r = String(Base64.decode(bb21r, Base64.DEFAULT), Charsets.ISO_8859_1)
+                bb21r = safeBase64Decode(bb21r)
             }
 
             var kugz3 = 0
@@ -164,7 +193,7 @@ private fun Element.toSearchResult(): SearchResponse? {
             for (dx09 in o3o95.length - 1 downTo 0) {
                 val vz8 = o3o95[dx09]
                 if (vz8 == '7') {
-                    bb21r = String(Base64.decode(bb21r, Base64.DEFAULT), Charsets.ISO_8859_1)
+                    bb21r = safeBase64Decode(bb21r)
                 } else if (vz8 == '3') {
                     bb21r = bb21r.reversed()
                 } else {
@@ -227,7 +256,7 @@ private fun Element.toSearchResult(): SearchResponse? {
         callback: (ExtractorLink) -> Unit
     ): Boolean {
         Log.d("FLMM", "data » $data")
-        val document = app.get(data).document
+        val document = app.get(data, interceptor = interceptor).document
 
         val iframes = document.select("iframe").mapNotNull {
             val src = it.attr("data-src").ifEmpty { it.attr("src") }
@@ -244,7 +273,7 @@ private fun Element.toSearchResult(): SearchResponse? {
             Log.d("FLMM", "Processing URL: $url")
             try {
                 if (url.contains("closeload") || url.contains("rapid")) {
-                    val resp = app.get(url, headers = mapOf("Referer" to "${mainUrl}/", "User-Agent" to USER_AGENT)).text
+                    val resp = app.get(url, headers = mapOf("Referer" to "${mainUrl}/", "User-Agent" to USER_AGENT), interceptor = interceptor).text
                     val unpacked = try { getAndUnpack(resp) } catch (e: Exception) { resp }
                     val match = Regex("""["']([^"']{40,})["']\.split\(\s*["']([^"'])["']\s*\)""").find(unpacked)
                         ?: Regex("""["']([^"']{40,})["']\.split\(\s*["']([^"'])["']\s*\)""").find(resp)
