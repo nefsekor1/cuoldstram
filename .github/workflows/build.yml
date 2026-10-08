@@ -49,12 +49,16 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/src
           chmod +x gradlew
-          ./gradlew make makePluginsJson --stacktrace --no-daemon
+          ./gradlew make makePluginsJson --stacktrace --no-daemon 2>&1 | tee $GITHUB_WORKSPACE/build.log || {
+            echo "::error::Gradle derleme hatası oluştu! Hata günlüğü kaydediliyor."
+            exit 1
+          }
           mkdir -p $GITHUB_WORKSPACE/builds
           find . -name "*.cs3" -exec cp -v {} $GITHUB_WORKSPACE/builds/ \;
           cp -v build/plugins.json $GITHUB_WORKSPACE/builds/ || true
 
       - name: Derlemeleri 'builds' Dalına Yükle
+        if: success()
         run: |
           cd $GITHUB_WORKSPACE/builds
           git config --local user.email "actions@github.com"
@@ -62,4 +66,16 @@ jobs:
           git checkout -B builds
           git add -A
           git commit -m "Otomatik Derleme: $GITHUB_SHA" || exit 0
+          git push origin builds --force
+
+      - name: Hata Günlüğünü builds Dalına Yükle
+        if: failure()
+        run: |
+          cd $GITHUB_WORKSPACE/builds
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git checkout -B builds
+          cp $GITHUB_WORKSPACE/build.log ./build_error.log || true
+          git add build_error.log || true
+          git commit -m "Derleme hatası günlüğü" || exit 0
           git push origin builds --force
