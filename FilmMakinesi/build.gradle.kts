@@ -1,9 +1,9 @@
-version = 40
+version = 41
 
 cloudstream {
-    authors     = listOf("keyiflerolsun", "usdogu")
+    authors     = listOf("fsmnk")
     language    = "tr"
-    description = "Film Makinesi, en yeni ve en güncel filmleri sitemizde full HD kalite farkı ile izleyebilirsiniz. HD film izle denildiğinde akla gelen en kaliteli film izleme sitesi."
+    description = "Film Makinesi - En yeni ve en güncel filmler"
 
     /**
      * Status int as the following:
@@ -14,5 +14,5 @@ cloudstream {
     **/
     status  = 1 // will be 3 if unspecified
     tvTypes = listOf("Movie")
-    iconUrl = "https://www.google.com/s2/favicons?domain=filmmakinesi.film&sz=%size%"
+    iconUrl = "https://www.google.com/s2/favicons?domain=filmmakinesi.to&sz=%size%"
 }

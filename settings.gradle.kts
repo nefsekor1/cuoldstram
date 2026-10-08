@@ -1,10 +1,16 @@
 rootProject.name = "FSMNK-TR"
 
-// Otomatik alt proje tanıma: build.gradle.kts içeren tüm alt klasörler projeye dahil edilir
-val disabled = listOf<String>()
+// Sadece çalışan ve aktif eklentileri dahil et
+val enabled = listOf(
+    "CanliTV",
+    "HDFilmCehennemi",
+    "FilmMakinesi",
+    "FilmModu",
+    "TurkAnime"
+)
 
 File(rootDir, ".").eachDir { dir ->
-    if (!disabled.contains(dir.name) && File(dir, "build.gradle.kts").exists()) {
+    if (enabled.contains(dir.name) && File(dir, "build.gradle.kts").exists()) {
         include(dir.name)
     }
 }

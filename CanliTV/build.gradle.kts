@@ -1,9 +1,9 @@
-version = 10
+version = 11
 
 cloudstream {
-    authors     = listOf("Adippe", "keyiflerolsun")
+    authors     = listOf("fsmnk")
     language    = "tr"
-    description = "Canlı TV"
+    description = "Canlı TV (Ulusal, Haber, Spor, Belgesel, Çocuk vb.)"
 
     /**
      * Status int as the following:
@@ -14,5 +14,5 @@ cloudstream {
     **/
     status  = 1 // will be 3 if unspecified
     tvTypes = listOf("Live")
-    iconUrl = "https://www.google.com/s2/favicons?domain=tr.canlitv.team&sz=%size%"
+    iconUrl = "https://www.google.com/s2/favicons?domain=canlitv.me&sz=%size%"
 }

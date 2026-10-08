@@ -10,7 +10,7 @@ import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
 
 class FilmModu : MainAPI() {
-    override var mainUrl              = "https://www.filmmodu.vip"
+    override var mainUrl              = "https://filmmodu.cc"
     override var name                 = "FilmModu"
     override val hasMainPage          = true
     override var lang                 = "tr"
@@ -50,15 +50,15 @@ class FilmModu : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val document = app.get("${request.data}?page=${page}").document
-        val home     = document.select("div.movie").mapNotNull { it.toMainPageResult() }
+        val home     = (document.select("article.movie_box").ifEmpty { document.select("div.movie") }).mapNotNull { it.toMainPageResult() }
 
         return newHomePageResponse(request.name, home)
     }
 
     private fun Element.toMainPageResult(): SearchResponse? {
-        val title     = this.selectFirst("a")?.text() ?: return null
-        val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
-        val posterUrl = fixUrlNull(this.selectFirst("picture img")?.attr("data-src"))
+        val title     = this.selectFirst("a.image")?.attr("title") ?: this.selectFirst("a")?.text() ?: return null
+        val href      = fixUrlNull(this.selectFirst("a.image")?.attr("href") ?: this.selectFirst("a")?.attr("href")) ?: return null
+        val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("data-src") ?: this.selectFirst("img")?.attr("src"))
 
         return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
     }
@@ -66,7 +66,7 @@ class FilmModu : MainAPI() {
     override suspend fun search(query: String): List<SearchResponse> {
         val document = app.get("${mainUrl}/film-ara?term=${query}").document
 
-        return document.select("div.movie").mapNotNull { it.toMainPageResult() }
+        return (document.select("article.movie_box").ifEmpty { document.select("div.movie") }).mapNotNull { it.toMainPageResult() }
     }
 
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)

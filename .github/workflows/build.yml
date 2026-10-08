@@ -10,12 +10,6 @@ on:
     branches:
       - master
       - main
-    paths-ignore:
-      - "**/*.md"
-      - "**/*.yml"
-      - "**/*.jpg"
-      - "**/*.png"
-      - "**/*.py"
 
 jobs:
   CloudStreamDerleyici:
@@ -47,16 +41,18 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Android SDK Ayarla
-        uses: android-actions/setup-android@v3.2.2
+      - name: Android Lisanslarını Kabul Et
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
 
       - name: Eklentileri Derle (.cs3 & plugins.json)
         run: |
           cd $GITHUB_WORKSPACE/src
           chmod +x gradlew
-          ./gradlew make makePluginsJson
-          cp **/build/*.cs3 $GITHUB_WORKSPACE/builds/ || true
-          cp build/plugins.json $GITHUB_WORKSPACE/builds/ || true
+          ./gradlew make makePluginsJson --no-daemon
+          mkdir -p $GITHUB_WORKSPACE/builds
+          find . -name "*.cs3" -exec cp -v {} $GITHUB_WORKSPACE/builds/ \;
+          cp -v build/plugins.json $GITHUB_WORKSPACE/builds/ || true
 
       - name: Derlemeleri 'builds' Dalına Yükle
         run: |

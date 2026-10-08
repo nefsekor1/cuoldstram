@@ -1,9 +1,9 @@
-version = 23
+version = 25
 
 cloudstream {
-    authors     = listOf("hexated", "keyiflerolsun")
+    authors     = listOf("fsmnk")
     language    = "tr"
-    description = "Türkiye'nin en hızlı hd film izleme sitesi"
+    description = "HDFilmCehennemi - Türkiye'nin en popüler film ve dizi izleme sitesi"
 
     /**
      * Status int as the following:
@@ -14,5 +14,5 @@ cloudstream {
     **/
     status  = 1 // will be 3 if unspecified
     tvTypes = listOf("Movie", "TvSeries")
-    iconUrl = "https://www.google.com/s2/favicons?domain=hdfilmcehennemi.com&sz=%size%"
+    iconUrl = "https://www.google.com/s2/favicons?domain=hdfilmcehennemi.nl&sz=%size%"
 }
