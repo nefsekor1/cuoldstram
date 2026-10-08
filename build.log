@@ -34,21 +34,21 @@ Fetching JAR: cloudstream.jar
 > Task :FilmModu:preBuild UP-TO-DATE
 > Task :FilmModu:preDebugBuild UP-TO-DATE
 > Task :FilmModu:generateDebugResValues
-> Task :FilmMakinesi:parseDebugLocalResources
-> Task :CanliTV:parseDebugLocalResources
 > Task :FilmModu:generateDebugResources
-> Task :CanliTV:generateDebugRFile
-> Task :FilmMakinesi:generateDebugRFile
+> Task :CanliTV:parseDebugLocalResources
+> Task :FilmMakinesi:parseDebugLocalResources
 > Task :FilmModu:packageDebugResources
 > Task :HDFilmCehennemi:checkKotlinGradlePluginConfigurationErrors SKIPPED
 > Task :HDFilmCehennemi:preBuild UP-TO-DATE
 > Task :HDFilmCehennemi:preDebugBuild UP-TO-DATE
-> Task :FilmModu:parseDebugLocalResources
 > Task :HDFilmCehennemi:generateDebugResValues
 > Task :HDFilmCehennemi:generateDebugResources
-> Task :FilmModu:generateDebugRFile
+> Task :FilmModu:parseDebugLocalResources
+> Task :CanliTV:generateDebugRFile
+> Task :FilmMakinesi:generateDebugRFile
 > Task :HDFilmCehennemi:packageDebugResources
 > Task :HDFilmCehennemi:parseDebugLocalResources
+> Task :FilmModu:generateDebugRFile
 > Task :HDFilmCehennemi:generateDebugRFile
 
 > Task :FilmModu:compileDebugKotlin
@@ -73,9 +73,6 @@ w: file:///home/runner/work/cuoldstram/cuoldstram/src/FilmModu/src/main/kotlin/c
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
-
-> Task :FilmMakinesi:compileDebugKotlin
-w: file:///home/runner/work/cuoldstram/cuoldstram/src/FilmMakinesi/src/main/kotlin/com/keyiflerolsun/CloseLoadExtractor.kt:75:38 'constructor(lang: String, url: String): SubtitleFile' is deprecated. Use newSubtitleFile method.
 
 > Task :HDFilmCehennemi:compileDebugKotlin
 w: file:///home/runner/work/cuoldstram/cuoldstram/src/HDFilmCehennemi/src/main/kotlin/com/keyiflerolsun/HDFilmCehennemi.kt:356:38 'constructor(lang: String, url: String): SubtitleFile' is deprecated. Use newSubtitleFile method.
@@ -131,6 +128,9 @@ w: file:///home/runner/work/cuoldstram/cuoldstram/src/HDFilmCehennemi/src/main/k
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
 
 > Task :CanliTV:compileDebugKotlin
+
+> Task :FilmMakinesi:compileDebugKotlin
+w: file:///home/runner/work/cuoldstram/cuoldstram/src/FilmMakinesi/src/main/kotlin/com/keyiflerolsun/CloseLoadExtractor.kt:75:38 'constructor(lang: String, url: String): SubtitleFile' is deprecated. Use newSubtitleFile method.
 
 > Task :FilmModu:compileDex
 WARNING: D8: Unexpected error during rewriting of Kotlin metadata for class 'com.keyiflerolsun.FilmModu$loadLinks$1':
@@ -9687,8 +9687,8 @@ Made CloudStream package at /home/runner/work/cuoldstram/cuoldstram/src/HDFilmCe
 > Task :TurkAnime:packageDebugResources
 > Task :TurkAnime:parseDebugLocalResources
 > Task :CanliTV:writeCacheEntry
-> Task :TurkAnime:generateDebugRFile
 > Task :FilmMakinesi:writeCacheEntry
+> Task :TurkAnime:generateDebugRFile
 > Task :FilmModu:writeCacheEntry
 > Task :HDFilmCehennemi:writeCacheEntry
 
@@ -11377,5 +11377,5 @@ Made CloudStream package at /home/runner/work/cuoldstram/cuoldstram/src/TurkAnim
 > Task :makePluginsJson
 Created /home/runner/work/cuoldstram/cuoldstram/src/build/plugins.json
 
-BUILD SUCCESSFUL in 1m 12s
+BUILD SUCCESSFUL in 1m 56s
 51 actionable tasks: 51 executed
