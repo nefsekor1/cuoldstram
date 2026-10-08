@@ -36,7 +36,7 @@ class FilmMakinesi : MainAPI() {
             val response = chain.proceed(request)
             val doc      = Jsoup.parse(response.peekBody(1024 * 1024).string())
 
-            if (doc.html().contains("Just a moment") || response.code in listOf(403, 503)) {
+            if (doc.html().contains("Just a moment")) {
                 return cloudflareKiller.intercept(chain)
             }
 
@@ -109,7 +109,14 @@ private fun Element.toSearchResult(): SearchResponse? {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.get("${mainUrl}/arama/?s=${query}", interceptor = interceptor).document
+        val document = app.get(
+            "${mainUrl}/arama/?s=${query}",
+            headers = mapOf(
+                "User-Agent" to USER_AGENT,
+                "Referer" to "${mainUrl}/"
+            ),
+            interceptor = interceptor
+        ).document
 
         return document.select("div.film-list div.item-relative").mapNotNull { it.toSearchResult() }
     }
@@ -117,7 +124,14 @@ private fun Element.toSearchResult(): SearchResponse? {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url, interceptor = interceptor).document
+        val document = app.get(
+            url,
+            headers = mapOf(
+                "User-Agent" to USER_AGENT,
+                "Referer" to "${mainUrl}/"
+            ),
+            interceptor = interceptor
+        ).document
 
         val title           = document.selectFirst("h1")?.text()?.trim() ?: return null
         val poster          = fixUrlNull(document.selectFirst("[property='og:image']")?.attr("content"))
@@ -256,7 +270,23 @@ private fun Element.toSearchResult(): SearchResponse? {
         callback: (ExtractorLink) -> Unit
     ): Boolean {
         Log.d("FLMM", "data » $data")
-        val document = app.get(data, interceptor = interceptor).document
+        val document = try {
+            app.get(
+                data,
+                headers = mapOf(
+                    "User-Agent" to USER_AGENT,
+                    "Referer" to "${mainUrl}/"
+                ),
+                interceptor = interceptor
+            ).document
+        } catch (e: Exception) {
+            Log.e("FLMM", "loadLinks document fetch error: ${e.message}")
+            try {
+                app.get(data, headers = mapOf("User-Agent" to USER_AGENT)).document
+            } catch (e2: Exception) {
+                return false
+            }
+        }
 
         val iframes = document.select("iframe").mapNotNull {
             val src = it.attr("data-src").ifEmpty { it.attr("src") }
@@ -266,14 +296,23 @@ private fun Element.toSearchResult(): SearchResponse? {
             it.attr("data-video_url").takeIf { s -> s.isNotBlank() }
         }
 
-        val allUrls = (iframes + videoParts).distinct().filter { !it.contains("youtube") }.map { fixUrl(it) }
+        // Rapidrame linklerini her zaman ilk sıraya alıyoruz (ExoPlayer tam uyumlu HLS)
+        val allUrls = (iframes + videoParts).distinct()
+            .filter { !it.contains("youtube") }
+            .map { fixUrl(it) }
+            .sortedByDescending { it.contains("rapid") }
+
         var linkFound = false
 
         allUrls.forEach { url ->
             Log.d("FLMM", "Processing URL: $url")
             try {
                 if (url.contains("closeload") || url.contains("rapid")) {
-                    val resp = app.get(url, headers = mapOf("Referer" to "${mainUrl}/", "User-Agent" to USER_AGENT), interceptor = interceptor).text
+                    val resp = app.get(
+                        url,
+                        headers = mapOf("Referer" to "${mainUrl}/", "User-Agent" to USER_AGENT),
+                        interceptor = interceptor
+                    ).text
                     val unpacked = try { getAndUnpack(resp) } catch (e: Exception) { resp }
                     val match = Regex("""["']([^"']{40,})["']\.split\(\s*["']([^"'])["']\s*\)""").find(unpacked)
                         ?: Regex("""["']([^"']{40,})["']\.split\(\s*["']([^"'])["']\s*\)""").find(resp)
@@ -282,7 +321,9 @@ private fun Element.toSearchResult(): SearchResponse? {
                         val delim = match.groupValues[2]
                         val streamUrl = decodeRapidrameStream(rawStr.split(delim).toMutableList())
                         if (streamUrl != null && streamUrl.startsWith("http")) {
-                            val sourceName = if (url.contains("closeload")) "Closeload" else "Rapidrame"
+                            val isRapid = url.contains("rapid")
+                            val sourceName = if (isRapid) "Hızlı Full HD (Rapidrame)" else "Alternatif (Closeload)"
+                            val streamReferer = if (isRapid) "https://rapid.filmmakinesi.to/" else "https://closeload.filmmakinesi.to/"
                             callback.invoke(
                                 newExtractorLink(
                                     source = "${this.name} - $sourceName",
@@ -290,7 +331,7 @@ private fun Element.toSearchResult(): SearchResponse? {
                                     url = streamUrl,
                                     type = ExtractorLinkType.M3U8
                                 ) {
-                                    this.headers = mapOf("Referer" to url, "User-Agent" to USER_AGENT)
+                                    this.headers = mapOf("Referer" to streamReferer, "User-Agent" to USER_AGENT)
                                     this.quality = Qualities.P1080.value
                                 }
                             )

@@ -20,7 +20,7 @@
   {
     "name": "HDFilmCehennemi",
     "internalName": "HDFilmCehennemi",
-    "version": 28,
+    "version": 29,
     "description": "HDFilmCehennemi - Türkiye'nin en popüler film ve dizi izleme sitesi",
     "authors": [
       "fsmnk"
@@ -32,14 +32,14 @@
       "TvSeries"
     ],
     "iconUrl": "https://www.google.com/s2/favicons?domain=hdfilmcehennemi.nl&sz=256",
-    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/HDFilmCehennemi.cs3?v=28",
+    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/HDFilmCehennemi.cs3?v=29",
     "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
     "apiVersion": 1
   },
   {
     "name": "FilmMakinesi",
     "internalName": "FilmMakinesi",
-    "version": 44,
+    "version": 45,
     "description": "FilmMakinesi - En yeni ve en güncel filmler",
     "authors": [
       "fsmnk"
@@ -50,7 +50,7 @@
       "Movie"
     ],
     "iconUrl": "https://www.google.com/s2/favicons?domain=filmmakinesi.to&sz=256",
-    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FilmMakinesi.cs3?v=44",
+    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FilmMakinesi.cs3?v=45",
     "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
     "apiVersion": 1
   },

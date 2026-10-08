@@ -1,8 +1,8 @@
 {
-  "name": "FSMNK TR Deposu (v44)",
+  "name": "FSMNK TR Deposu (v45)",
   "description": "FSMNK için Türkçe eklenti ve kaynak deposu (Film, Dizi, Anime, Canlı TV)",
-  "manifestVersion": 4,
+  "manifestVersion": 5,
   "pluginLists": [
-    "https://raw.githubusercontent.com/nefsekor1/cuoldstram/master/plugins-v3.json?v=44"
+    "https://raw.githubusercontent.com/nefsekor1/cuoldstram/master/plugins-v3.json?v=45"
   ]
 }
