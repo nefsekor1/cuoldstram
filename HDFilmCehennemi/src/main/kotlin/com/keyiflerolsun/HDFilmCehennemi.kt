@@ -316,8 +316,8 @@ override suspend fun loadLinks(
     )
 
     data class Meta(
-        @JsonProperty("title") val title: String,
-        @JsonProperty("canonical") val canonical: Boolean,
-        @JsonProperty("keywords") val keywords: Boolean
+        @JsonProperty("title") val title: String? = null,
+        @JsonProperty("canonical") val canonical: Any? = null,
+        @JsonProperty("keywords") val keywords: Any? = null
     )
 }
