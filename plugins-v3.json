@@ -1,0 +1,93 @@
+[
+  {
+    "name": "CanliTV",
+    "internalName": "CanliTV",
+    "version": 12,
+    "description": "Canlı TV (Ulusal, Haber, Spor, Belgesel, Çocuk vb.)",
+    "authors": [
+      "fsmnk"
+    ],
+    "language": "tr",
+    "status": 1,
+    "tvTypes": [
+      "Live"
+    ],
+    "iconUrl": "https://www.google.com/s2/favicons?domain=canlitv.me&sz=256",
+    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/CanliTV.cs3",
+    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+    "apiVersion": 1
+  },
+  {
+    "name": "HDFilmCehennemi",
+    "internalName": "HDFilmCehennemi",
+    "version": 28,
+    "description": "HDFilmCehennemi - Türkiye'nin en popüler film ve dizi izleme sitesi",
+    "authors": [
+      "fsmnk"
+    ],
+    "language": "tr",
+    "status": 1,
+    "tvTypes": [
+      "Movie",
+      "TvSeries"
+    ],
+    "iconUrl": "https://www.google.com/s2/favicons?domain=hdfilmcehennemi.nl&sz=256",
+    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/HDFilmCehennemi.cs3",
+    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+    "apiVersion": 1
+  },
+  {
+    "name": "FilmMakinesi",
+    "internalName": "FilmMakinesi",
+    "version": 44,
+    "description": "FilmMakinesi - En yeni ve en güncel filmler",
+    "authors": [
+      "fsmnk"
+    ],
+    "language": "tr",
+    "status": 1,
+    "tvTypes": [
+      "Movie"
+    ],
+    "iconUrl": "https://www.google.com/s2/favicons?domain=filmmakinesi.to&sz=256",
+    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FilmMakinesi.cs3",
+    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+    "apiVersion": 1
+  },
+  {
+    "name": "FilmModu",
+    "internalName": "FilmModu",
+    "version": 16,
+    "description": "FilmModu - HD Film izleme platformu",
+    "authors": [
+      "fsmnk"
+    ],
+    "language": "tr",
+    "status": 1,
+    "tvTypes": [
+      "Movie"
+    ],
+    "iconUrl": "https://www.google.com/s2/favicons?domain=filmmodu.cc&sz=256",
+    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FilmModu.cs3",
+    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+    "apiVersion": 1
+  },
+  {
+    "name": "TurkAnime",
+    "internalName": "TurkAnime",
+    "version": 15,
+    "description": "Türk Anime TV - Türkiye'nin online anime izleme sitesi",
+    "authors": [
+      "fsmnk"
+    ],
+    "language": "tr",
+    "status": 1,
+    "tvTypes": [
+      "Anime"
+    ],
+    "iconUrl": "https://www.google.com/s2/favicons?domain=turkanime.tv&sz=256",
+    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/TurkAnime.cs3",
+    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+    "apiVersion": 1
+  }
+]
