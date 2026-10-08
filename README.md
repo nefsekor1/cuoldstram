@@ -48,17 +48,8 @@ Cloudstream uygulamasında "Depo Ekle" alanına bir kelime yazdığınızda uygu
 
 ---
 
-## ⚡ Mevcut Popüler Türkçe Topluluk Depoları (Hızlı Kurulum)
-
-Kendi deponuzu GitHub'a yüklemeden önce doğrudan Cloudstream içine ekleyip hemen kullanabileceğiniz popüler Türkçe depolar:
-
-| Depo Adı | Kısa Kod (Shortcode) | Doğrudan URL |
-| :--- | :--- | :--- |
-| **Kraptor** *(En Kapsamlı)* | `kraptorcs` | `https://raw.githubusercontent.com/Kraptor123/cs-kraptor/builds/repo.json` |
-| **Lawliet** | `lawlietrepo` | `https://raw.githubusercontent.com/Lawliet94/cs-lawliet/builds/repo.json` |
-| **Kekik** | `KekikAkademi` | `https://raw.githubusercontent.com/maarrem/cs-Kekik/builds/repo.json` |
-
-> **İpucu:** Cloudstream'de "Depo Ekle" ekranında URL yerine doğrudan **Kısa Kod** (örneğin `kraptorcs`) yazarak da ekleyebilirsiniz.
+## ⚡ Bağımsız Depo Özelliği
+Bu depo, harici hiçbir üçüncü taraf depoya (Kraptor, Kekik vb.) bağımlı değildir. Tüm eklenti paketleri (`.cs3`) ve kataloglar doğrudan bu deponun kendi sunucusunda (`nefsekor1/cuoldstram`) barındırılmaktadır.
 
 ---
 
