@@ -1,5 +1,7 @@
 import com.lagradost.cloudstream3.gradle.CloudstreamExtension
 import com.android.build.gradle.BaseExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 buildscript {
     repositories {
@@ -10,7 +12,7 @@ buildscript {
 
     dependencies {
         classpath("com.android.tools.build:gradle:8.7.3")
-        classpath("com.github.recloudstream:gradle:master-SNAPSHOT")
+        classpath("com.github.recloudstream:gradle:-SNAPSHOT")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.0")
     }
 }
@@ -35,13 +37,12 @@ subprojects {
     apply(plugin = "com.lagradost.cloudstream3.gradle")
 
     cloudstream {
-        // GitHub Actions çalışırken GITHUB_REPOSITORY ortam değişkeni otomatik kullanılır
-        setRepo(System.getenv("GITHUB_REPOSITORY") ?: "https://github.com/nefsekor1/cuoldstram")
+        setRepo(System.getenv("GITHUB_REPOSITORY") ?: "nefsekor1/cuoldstram")
         authors = listOf("fsmnk")
     }
 
     android {
-        namespace = "com.fsmnk.cs"
+        namespace = "com.fsmnk.cs.${project.name.lowercase()}"
 
         defaultConfig {
             minSdk = 21
@@ -54,9 +55,9 @@ subprojects {
             targetCompatibility = JavaVersion.VERSION_1_8
         }
 
-        tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile> {
+        tasks.withType<KotlinJvmCompile> {
             compilerOptions {
-                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+                jvmTarget.set(JvmTarget.JVM_1_8)
                 freeCompilerArgs.addAll(
                     listOf(
                         "-Xno-call-assertions",
@@ -72,18 +73,14 @@ subprojects {
         val cloudstream by configurations
         val implementation by configurations
 
-        // Cloudstream ana API sınıfları için bağımlılık
+        // Cloudstream ana API sınıfları
         cloudstream("com.lagradost:cloudstream3:pre-release")
 
-        // Gerekli standart kütüphaneler
+        // Standart eklenti kütüphaneleri
         implementation(kotlin("stdlib"))
-        implementation("com.github.Blatzar:NiceHttp:0.4.13")
-        implementation("org.jsoup:jsoup:1.19.1")
+        implementation("com.github.Blatzar:NiceHttp:0.4.11")
+        implementation("org.jsoup:jsoup:1.18.3")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1")
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-        implementation("com.github.vidstige:jadb:v1.2.1")
     }
 }
 
