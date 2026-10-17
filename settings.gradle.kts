@@ -5,5 +5,6 @@ include(
     ":HDFilmCehennemi",
     ":FilmMakinesi",
     ":FilmModu",
-    ":TurkAnime"
+    ":TurkAnime",
+    ":DiziBox"
 )

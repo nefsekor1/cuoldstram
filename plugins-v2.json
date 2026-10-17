@@ -20,8 +20,8 @@
   {
     "name": "HDFilmCehennemi",
     "internalName": "HDFilmCehennemi",
-    "version": 29,
-    "description": "HDFilmCehennemi - Türkiye'nin en popüler film ve dizi izleme sitesi",
+    "version": 30,
+    "description": "HDFilmCehennemi - Türkiye'nin en popüler film ve dizi izleme sitesi (1080p Rapidrame)",
     "authors": [
       "fsmnk"
     ],
@@ -51,6 +51,25 @@
     ],
     "iconUrl": "https://www.google.com/s2/favicons?domain=filmmakinesi.to&sz=256",
     "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FilmMakinesi.cs3",
+    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+    "apiVersion": 1
+  },
+  {
+    "name": "DiziBox",
+    "internalName": "DiziBox",
+    "version": 24,
+    "description": "DiziBOX - Yabancı ve Yerli Popüler Diziler (Türkçe Dublaj & Altyazılı)",
+    "authors": [
+      "fsmnk",
+      "keyiflerolsun"
+    ],
+    "language": "tr",
+    "status": 1,
+    "tvTypes": [
+      "TvSeries"
+    ],
+    "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizibox.live&sz=256",
+    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/DiziBox.cs3",
     "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
     "apiVersion": 1
   },
