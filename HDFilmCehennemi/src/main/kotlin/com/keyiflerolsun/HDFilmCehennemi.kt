@@ -72,14 +72,19 @@ class HDFilmCehennemi : MainAPI() {
             request.data
         }
 
-        val document = app.get(
-            url,
-            headers = mapOf(
-                "User-Agent" to USER_AGENT,
-                "Referer" to "$mainUrl/"
-            ),
-            interceptor = interceptor
-        ).document
+        val document = try {
+            app.get(
+                url,
+                headers = mapOf(
+                    "User-Agent" to USER_AGENT,
+                    "Referer" to "$mainUrl/"
+                ),
+                interceptor = interceptor
+            ).document
+        } catch (e: Throwable) {
+            Log.e("HDCH", "getMainPage error: ${e.message}")
+            return newHomePageResponse(request.name, emptyList())
+        }
 
         val home = document.select("div.section-content a.poster, div.card-body a.poster, a.poster, div.film-list div.item-relative")
             .mapNotNull { it.toSearchResult() }
@@ -154,14 +159,19 @@ class HDFilmCehennemi : MainAPI() {
     }
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(
-            url,
-            headers = mapOf(
-                "User-Agent" to USER_AGENT,
-                "Referer" to "${mainUrl}/"
-            ),
-            interceptor = interceptor
-        ).document
+        val document = try {
+            app.get(
+                url,
+                headers = mapOf(
+                    "User-Agent" to USER_AGENT,
+                    "Referer" to "${mainUrl}/"
+                ),
+                interceptor = interceptor
+            ).document
+        } catch (e: Throwable) {
+            Log.e("HDCH", "load error: ${e.message}")
+            return null
+        }
 
         val title       = document.selectFirst("h1.section-title")?.text()?.substringBefore(" izle")?.trim()
             ?: document.selectFirst("h1")?.text()?.trim() ?: return null
@@ -350,49 +360,90 @@ class HDFilmCehennemi : MainAPI() {
                 ),
                 interceptor = interceptor
             ).text
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             Log.e("HDCH", "invokeLocalSource error: ${e.message}")
             return
         }
 
-        val script = Jsoup.parse(pageText).select("script").find { it.data().contains("sources:") || it.data().contains("jwplayer") }?.data() ?: pageText
-        Log.d("HDCH", "script » $script")
-        val unpacked = try { getAndUnpack(script) } catch (e: Exception) { script }
-        
-        var lastUrl: String? = null
-        val universalMatch = Regex("""["']([^"']{40,})["']\.split\(\s*["']([^"'])["']\s*\)""").find(unpacked)
-            ?: Regex("""["']([^"']{40,})["']\.split\(\s*["']([^"'])["']\s*\)""").find(pageText)
+        val scripts = Jsoup.parse(pageText).select("script").map { it.data() }
+        val candidateTexts = mutableListOf<String>()
 
-        if (universalMatch != null) {
-            val rawStr = universalMatch.groupValues[1].replace("\\/", "/")
-            val delim = universalMatch.groupValues[2]
-            lastUrl = decodeRapidrameStream(rawStr.split(delim).toMutableList())
-        } else if (unpacked.contains("dc_hello(")) {
-            val videoData = unpacked.substringAfter("file_link=\"").substringBefore("\";")
-            val base64Input = videoData.substringAfter("dc_hello(\"").substringBefore("\");")
-            lastUrl = dcHello(base64Input).substringAfter("https").let { "https$it" }
+        for (s in scripts) {
+            if (s.contains("eval(function(p,a,c,k,e,d)")) {
+                try {
+                    val unpacked = getAndUnpack(s)
+                    if (unpacked.isNotBlank()) candidateTexts.add(unpacked)
+                } catch (e: Throwable) {
+                    Log.e("HDCH", "Unpack error: ${e.message}")
+                }
+            } else if (s.contains("sources:") || s.contains(".split(")) {
+                candidateTexts.add(s)
+            }
         }
+        candidateTexts.add(pageText)
 
-        if (lastUrl == null || !lastUrl.startsWith("http")) return
-        val subData = (if (unpacked.contains("tracks: [")) unpacked else script).substringAfter("tracks: [").substringBefore("]")
-        Log.d("HDCH", "subData » $subData")
-        try {
-            AppUtils.tryParseJson<List<SubSource>>("[${subData}]")?.filter { it.kind == "captions"}?.map {
-                val subtitleUrl = "${mainUrl}${it.file}/"
-                val headers = mapOf(
-                    "User-Agent" to USER_AGENT,
-                    "Referer" to "${mainUrl}/"
-                )
-                val subtitleResponse = app.get(subtitleUrl, headers = headers, allowRedirects=true, interceptor = interceptor)
-                if (subtitleResponse.isSuccessful) {
-                    subtitleCallback(SubtitleFile(it.language.toString(), subtitleUrl))
-                    Log.d("HDCH", "Subtitle added: $subtitleUrl")
-                } else {
-                    Log.d("HDCH", "Subtitle URL inaccessible: ${subtitleResponse.code}")
+        var lastUrl: String? = null
+        val splitRegex = Regex("""["']([^"']{40,})["']\.split\(\s*["']([^"'])["']\s*\)""")
+
+        for (text in candidateTexts) {
+            val matches = splitRegex.findAll(text).filter { it.groupValues[2] != "|" }
+            for (m in matches) {
+                val rawStr = m.groupValues[1].replace("\\/", "/")
+                val delim = m.groupValues[2]
+                val decoded = decodeRapidrameStream(rawStr.split(delim).toMutableList())
+                if (decoded != null && decoded.startsWith("http")) {
+                    lastUrl = decoded
+                    break
                 }
             }
-        } catch (e: Exception) {
-            Log.e("HDCH", "Subtitle parse error: ${e.message}")
+            if (lastUrl != null) break
+
+            if (text.contains("dc_hello(")) {
+                val videoData = text.substringAfter("file_link=\"").substringBefore("\";")
+                val base64Input = videoData.substringAfter("dc_hello(\"").substringBefore("\");")
+                val decoded = dcHello(base64Input).substringAfter("https").let { "https$it" }
+                if (decoded.startsWith("http")) {
+                    lastUrl = decoded
+                    break
+                }
+            }
+        }
+
+        if (lastUrl == null || !lastUrl.startsWith("http")) {
+            val nestedIframe = Jsoup.parse(pageText).select("iframe").firstOrNull()?.let {
+                fixUrlNull(it.attr("data-src").takeIf { s -> s.isNotBlank() } ?: it.attr("src"))
+            }
+            if (nestedIframe != null && nestedIframe != url) {
+                var target = nestedIframe
+                if (target.contains("rapidrame_id=")) {
+                    val rapidId = target.substringAfter("rapidrame_id=").substringBefore("&").removeSuffix("/")
+                    target = "${mainUrl}/rplayer/$rapidId/"
+                }
+                loadExtractor(target, "${mainUrl}/", subtitleCallback, callback)
+            }
+            return
+        }
+
+        val subData = candidateTexts.find { it.contains("tracks: [") }?.substringAfter("tracks: [")?.substringBefore("]")
+        if (!subData.isNullOrBlank()) {
+            try {
+                AppUtils.tryParseJson<List<SubSource>>("[${subData}]")?.filter { it.kind == "captions"}?.map {
+                    val subtitleUrl = "${mainUrl}${it.file}/"
+                    val headers = mapOf(
+                        "User-Agent" to USER_AGENT,
+                        "Referer" to "${mainUrl}/"
+                    )
+                    val subtitleResponse = app.get(subtitleUrl, headers = headers, allowRedirects=true, interceptor = interceptor)
+                    if (subtitleResponse.isSuccessful) {
+                        subtitleCallback(SubtitleFile(it.language.toString(), subtitleUrl))
+                        Log.d("HDCH", "Subtitle added: $subtitleUrl")
+                    } else {
+                        Log.d("HDCH", "Subtitle URL inaccessible: ${subtitleResponse.code}")
+                    }
+                }
+            } catch (e: Throwable) {
+                Log.e("HDCH", "Subtitle parse error: ${e.message}")
+            }
         }
 
         callback.invoke(
@@ -427,11 +478,11 @@ class HDFilmCehennemi : MainAPI() {
                 ),
                 interceptor = interceptor
             ).document
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             Log.e("HDCH", "loadLinks document error: ${e.message}")
             try {
                 app.get(data, headers = mapOf("User-Agent" to USER_AGENT)).document
-            } catch (e2: Exception) {
+            } catch (e2: Throwable) {
                 return false
             }
         }
@@ -447,7 +498,6 @@ class HDFilmCehennemi : MainAPI() {
                     val apiGet = app.get(
                         "${mainUrl}/video/$videoID/", interceptor = interceptor,
                         headers = mapOf(
-                            "Content-Type" to "application/json",
                             "X-Requested-With" to "fetch",
                             "User-Agent" to USER_AGENT
                         ),
@@ -473,15 +523,51 @@ class HDFilmCehennemi : MainAPI() {
                         iframe = fixUrl(iframe)
                     }
                     Log.d("HDCH", "$source » $videoID » $iframe")
+                    var currentFound = false
                     invokeLocalSource(source, iframe, subtitleCallback) { link ->
+                        currentFound = true
                         linkFound = true
                         callback(link)
                     }
-                } catch (e: Exception) {
+                    if (!currentFound) {
+                        loadExtractor(iframe, "${mainUrl}/", subtitleCallback) { link ->
+                            linkFound = true
+                            callback(link)
+                        }
+                    }
+                } catch (e: Throwable) {
                     Log.e("HDCH", "Error in source $source: ${e.message}")
                 }
             }
         }
+
+        if (!linkFound) {
+            document.select("iframe").forEach { el ->
+                try {
+                    val src = fixUrlNull(el.attr("data-src").takeIf { s -> s.isNotBlank() } ?: el.attr("src")) ?: return@forEach
+                    var iframe = src
+                    if (iframe.contains("rapidrame_id=")) {
+                        val rapidId = iframe.substringAfter("rapidrame_id=").substringBefore("&").removeSuffix("/")
+                        iframe = "${mainUrl}/rplayer/$rapidId/"
+                    }
+                    var currentFound = false
+                    invokeLocalSource("Player", iframe, subtitleCallback) { link ->
+                        currentFound = true
+                        linkFound = true
+                        callback(link)
+                    }
+                    if (!currentFound) {
+                        loadExtractor(iframe, "${mainUrl}/", subtitleCallback) { link ->
+                            linkFound = true
+                            callback(link)
+                        }
+                    }
+                } catch (e: Throwable) {
+                    Log.e("HDCH", "Direct iframe error: ${e.message}")
+                }
+            }
+        }
+
         return linkFound
     }
 

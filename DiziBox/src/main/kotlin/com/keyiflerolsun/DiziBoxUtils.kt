@@ -62,20 +62,28 @@ object CryptoJS {
      * @param cipherText encrypted string
      */
     fun decrypt(password: String, cipherText: String): String {
-        val ctBytes         = Base64.decode(cipherText.toByteArray(), Base64.DEFAULT)
-        val saltBytes       = Arrays.copyOfRange(ctBytes, 8, 16)
-        val cipherTextBytes = Arrays.copyOfRange(ctBytes, 16, ctBytes.size)
+        return try {
+            val ctBytes         = Base64.decode(cipherText.toByteArray(), Base64.DEFAULT)
+            val saltBytes       = Arrays.copyOfRange(ctBytes, 8, 16)
+            val cipherTextBytes = Arrays.copyOfRange(ctBytes, 16, ctBytes.size)
 
-        val key = ByteArray(KEY_SIZE / 8)
-        val iv  = ByteArray(IV_SIZE / 8)
-        evpkdf(password.toByteArray(), KEY_SIZE, IV_SIZE, saltBytes, key, iv)
+            val key = ByteArray(KEY_SIZE / 8)
+            val iv  = ByteArray(IV_SIZE / 8)
+            evpkdf(password.toByteArray(), KEY_SIZE, IV_SIZE, saltBytes, key, iv)
 
-        val cipher = Cipher.getInstance(HASH_CIPHER)
-        val keyS   = SecretKeySpec(key, AES)
-        cipher.init(Cipher.DECRYPT_MODE, keyS, IvParameterSpec(iv))
+            val cipher = try {
+                Cipher.getInstance(HASH_CIPHER)
+            } catch (e: Exception) {
+                Cipher.getInstance("AES/CBC/PKCS5Padding")
+            }
+            val keyS   = SecretKeySpec(key, AES)
+            cipher.init(Cipher.DECRYPT_MODE, keyS, IvParameterSpec(iv))
 
-        val plainText = cipher.doFinal(cipherTextBytes)
-        return String(plainText)
+            val plainText = cipher.doFinal(cipherTextBytes)
+            String(plainText)
+        } catch (e: Throwable) {
+            ""
+        }
     }
 
     private fun evpkdf(password: ByteArray, keySize: Int, ivSize: Int, salt: ByteArray, resultKey: ByteArray, resultIv: ByteArray): ByteArray {

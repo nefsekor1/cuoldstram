@@ -52,6 +52,8 @@ jobs:
           find $GITHUB_WORKSPACE/src -name "*.cs3" -exec cp -v {} $GITHUB_WORKSPACE/builds/ \;
           [ -f $GITHUB_WORKSPACE/src/build/plugins.json ] && cp -v $GITHUB_WORKSPACE/src/build/plugins.json $GITHUB_WORKSPACE/builds/ || true
           [ -f $GITHUB_WORKSPACE/src/plugins.json ] && cp -v $GITHUB_WORKSPACE/src/plugins.json $GITHUB_WORKSPACE/builds/ || true
+          [ -f $GITHUB_WORKSPACE/src/plugins-v2.json ] && cp -v $GITHUB_WORKSPACE/src/plugins-v2.json $GITHUB_WORKSPACE/builds/ || true
+          [ -f $GITHUB_WORKSPACE/src/plugins-v3.json ] && cp -v $GITHUB_WORKSPACE/src/plugins-v3.json $GITHUB_WORKSPACE/builds/ || true
           [ -f $GITHUB_WORKSPACE/src/repo.json ] && cp -v $GITHUB_WORKSPACE/src/repo.json $GITHUB_WORKSPACE/builds/ || true
           echo "=== BUILDS KLASÖRÜNDEKİ DOSYALAR ==="
           ls -la $GITHUB_WORKSPACE/builds
@@ -75,6 +77,8 @@ jobs:
           curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@master/repo.json" || true
           curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/repo.json" || true
           curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/plugins.json" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/plugins-v2.json" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/plugins-v3.json" || true
           curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/HDFilmCehennemi.cs3" || true
           curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/DiziBox.cs3" || true
           curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/FilmMakinesi.cs3" || true
