@@ -67,3 +67,17 @@ jobs:
           git add -A
           git commit -m "Derleme Tamamlandi: $GITHUB_SHA" || exit 0
           git push origin builds --force
+
+      - name: jsDelivr Ön Belleğini Temizle (Purge CDN Cache)
+        if: success()
+        run: |
+          sleep 2
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@master/repo.json" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/repo.json" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/plugins.json" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/HDFilmCehennemi.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/DiziBox.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/FilmMakinesi.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/CanliTV.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/FilmModu.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/TurkAnime.cs3" || true
