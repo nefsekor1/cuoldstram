@@ -1,0 +1,8 @@
+{
+  "name": "CloudStream TR (FSMNK)",
+  "description": "FSMNK Türkçe Film, Dizi, Anime ve Canlı TV Deposu",
+  "manifestVersion": 1,
+  "pluginLists": [
+    "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/plugins.json"
+  ]
+}
