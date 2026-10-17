@@ -20,7 +20,7 @@
   {
     "name": "HDFilmCehennemi",
     "internalName": "HDFilmCehennemi",
-    "version": 31,
+    "version": 32,
     "description": "HDFilmCehennemi - Türkiye'nin en popüler film ve dizi izleme sitesi (1080p Rapidrame)",
     "authors": [
       "fsmnk"
@@ -39,7 +39,7 @@
   {
     "name": "FilmMakinesi",
     "internalName": "FilmMakinesi",
-    "version": 45,
+    "version": 46,
     "description": "FilmMakinesi - En yeni ve en güncel filmler (1080p Full HD)",
     "authors": [
       "fsmnk"
@@ -57,7 +57,7 @@
   {
     "name": "DiziBox",
     "internalName": "DiziBox",
-    "version": 25,
+    "version": 26,
     "description": "DiziBOX - Yabancı ve Yerli Popüler Diziler (Türkçe Dublaj & Altyazılı)",
     "authors": [
       "fsmnk",

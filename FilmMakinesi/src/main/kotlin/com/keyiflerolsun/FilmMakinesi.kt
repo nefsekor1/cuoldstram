@@ -27,6 +27,11 @@ class FilmMakinesi : MainAPI() {
     override var sequentialMainPageDelay       = 150L  // ? 0.15 saniye
     override var sequentialMainPageScrollDelay = 150L  // ? 0.15 saniye
 
+    companion object {
+        private const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+    }
+
+    // ! CloudFlare bypass
     private val cloudflareKiller by lazy { CloudflareKiller() }
     private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
 
@@ -34,10 +39,20 @@ class FilmMakinesi : MainAPI() {
         override fun intercept(chain: Interceptor.Chain): Response {
             val request  = chain.request()
             val response = chain.proceed(request)
-            val doc      = Jsoup.parse(response.peekBody(1024 * 1024).string())
 
-            if (doc.html().contains("Just a moment")) {
-                return cloudflareKiller.intercept(chain)
+            val body = try {
+                response.peekBody(1024 * 1024).string()
+            } catch (e: Throwable) {
+                ""
+            }
+
+            if (response.code in listOf(403, 503) || body.contains("Just a moment") || body.contains("Checking your browser") || body.contains("cf-browser-verification") || body.contains("Attention Required")) {
+                response.close()
+                return try {
+                    cloudflareKiller.intercept(chain)
+                } catch (e: Throwable) {
+                    chain.proceed(request)
+                }
             }
 
             return response

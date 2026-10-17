@@ -26,6 +26,10 @@ class HDFilmCehennemi : MainAPI() {
     override var sequentialMainPageDelay       = 150L
     override var sequentialMainPageScrollDelay = 150L
 
+    companion object {
+        private const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+    }
+
     // ! CloudFlare bypass
     private val cloudflareKiller by lazy { CloudflareKiller() }
     private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
@@ -36,12 +40,27 @@ class HDFilmCehennemi : MainAPI() {
             val response = chain.proceed(request)
 
             if (response.code in listOf(403, 503)) {
-                return cloudflareKiller.intercept(chain)
+                response.close()
+                return try {
+                    cloudflareKiller.intercept(chain)
+                } catch (e: Throwable) {
+                    chain.proceed(request)
+                }
             }
 
-            val body = response.peekBody(1024 * 1024).string()
+            val body = try {
+                response.peekBody(1024 * 1024).string()
+            } catch (e: Throwable) {
+                ""
+            }
+
             if (body.contains("Just a moment") || body.contains("Checking your browser") || body.contains("cf-browser-verification") || body.contains("Attention Required")) {
-                return cloudflareKiller.intercept(chain)
+                response.close()
+                return try {
+                    cloudflareKiller.intercept(chain)
+                } catch (e: Throwable) {
+                    chain.proceed(request)
+                }
             }
 
             return response
