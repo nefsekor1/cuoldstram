@@ -37,31 +37,41 @@ class DiziBox : MainAPI() {
 
     class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller): Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
-            val request  = chain.request()
-            val response = chain.proceed(request)
-
-            if (response.code in listOf(403, 503)) {
-                response.close()
-                return try {
-                    cloudflareKiller.intercept(chain)
-                } catch (e: Throwable) {
-                    chain.proceed(request)
-                }
-            }
-
-            val body = try {
-                response.peekBody(1024 * 1024).string()
+            val request = chain.request()
+            val response: Response
+            try {
+                response = chain.proceed(request)
             } catch (e: Throwable) {
-                ""
+                return chain.proceed(request)
             }
 
-            if (body.contains("Just a moment") || body.contains("Checking your browser") || body.contains("cf-browser-verification") || body.contains("Attention Required")) {
-                response.close()
-                return try {
-                    cloudflareKiller.intercept(chain)
-                } catch (e: Throwable) {
-                    chain.proceed(request)
+            try {
+                if (response.code in listOf(403, 503)) {
+                    response.close()
+                    return try {
+                        cloudflareKiller.intercept(chain)
+                    } catch (e: Throwable) {
+                        chain.proceed(request)
+                    }
                 }
+
+                val body = try {
+                    response.peekBody(4096).string()
+                } catch (e: Throwable) {
+                    ""
+                }
+
+                if (body.contains("Just a moment") || body.contains("Checking your browser") || body.contains("cf-browser-verification") || body.contains("Attention Required")) {
+                    response.close()
+                    return try {
+                        cloudflareKiller.intercept(chain)
+                    } catch (e: Throwable) {
+                        chain.proceed(request)
+                    }
+                }
+            } catch (e: Throwable) {
+                try { response.close() } catch (_: Throwable) {}
+                return chain.proceed(request)
             }
 
             return response
