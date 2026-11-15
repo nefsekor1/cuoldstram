@@ -50,10 +50,11 @@ jobs:
           find $GITHUB_WORKSPACE/src -name "*.cs3"
           mkdir -p $GITHUB_WORKSPACE/builds
           find $GITHUB_WORKSPACE/src -name "*.cs3" -exec cp -v {} $GITHUB_WORKSPACE/builds/ \;
-          [ -f $GITHUB_WORKSPACE/src/build/plugins.json ] && cp -v $GITHUB_WORKSPACE/src/build/plugins.json $GITHUB_WORKSPACE/builds/ || true
-          [ -f $GITHUB_WORKSPACE/src/plugins.json ] && cp -v $GITHUB_WORKSPACE/src/plugins.json $GITHUB_WORKSPACE/builds/ || true
-          [ -f $GITHUB_WORKSPACE/src/plugins-v2.json ] && cp -v $GITHUB_WORKSPACE/src/plugins-v2.json $GITHUB_WORKSPACE/builds/ || true
-          [ -f $GITHUB_WORKSPACE/src/plugins-v3.json ] && cp -v $GITHUB_WORKSPACE/src/plugins-v3.json $GITHUB_WORKSPACE/builds/ || true
+          if [ -f $GITHUB_WORKSPACE/src/build/plugins.json ]; then
+            cp -v $GITHUB_WORKSPACE/src/build/plugins.json $GITHUB_WORKSPACE/builds/plugins.json
+            cp -v $GITHUB_WORKSPACE/src/build/plugins.json $GITHUB_WORKSPACE/builds/plugins-v2.json
+            cp -v $GITHUB_WORKSPACE/src/build/plugins.json $GITHUB_WORKSPACE/builds/plugins-v3.json
+          fi
           [ -f $GITHUB_WORKSPACE/src/repo.json ] && cp -v $GITHUB_WORKSPACE/src/repo.json $GITHUB_WORKSPACE/builds/ || true
           echo "=== BUILDS KLASÖRÜNDEKİ DOSYALAR ==="
           ls -la $GITHUB_WORKSPACE/builds
