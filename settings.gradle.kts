@@ -6,5 +6,19 @@ include(
     ":FilmMakinesi",
     ":FilmModu",
     ":TurkAnime",
-    ":DiziBox"
+    ":DiziBox",
+    ":AnimeciX",
+    ":AsyaWatch",
+    ":BelgeselX",
+    ":CizgiMax",
+    ":DMax",
+    ":DiziGom",
+    ":DiziMag",
+    ":DiziYou",
+    ":Dizipod",
+    ":FullHDFilmizlesene",
+    ":JetFilmizle",
+    ":KultFilmler",
+    ":SezonlukDizi",
+    ":YabanciDizi"
 )

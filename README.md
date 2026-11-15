@@ -20,16 +20,23 @@ Cloudstream uygulamasında "Depo Ekle" alanına bir kelime yazdığınızda uygu
 | **HDFilmCehennemi** | 🎬 Film & Dizi | TR | Türkiye'nin en popüler film ve dizi platformu |
 | **FilmModu** | 🎬 Film | TR | HD kalitede güncel yabancı ve yerli filmler |
 | **FilmMakinesi** | 🎬 Film | TR | Türkçe dublaj ve altyazılı film arşivi |
-| **SetFilmIzle** | 🎬 Film & Dizi | TR | Donmasız 1080p full HD film ve diziler |
-| **Dizilla** | 📺 Yabancı Dizi | TR | Güncel ve popüler yabancı dizi bölümleri |
+| **FullHDFilmizlesene** | 🎬 Film | TR | Türkiye'nin lider film sitesi, en yeni filmler Full HD |
+| **JetFilmizle** | 🎬 Film | TR | Binlerce film seçeneğiyle en iyi film izleme sitesi |
+| **KultFilmler** | 🎬 Film | TR | Özenle seçilmiş en iyi kült filmler |
 | **DiziBox** | 📺 Yabancı Dizi | TR | Zengin yabancı dizi arşivi |
+| **DiziMag** | 📺 Yabancı Dizi | TR | Türkçe altyazılı yabancı dizi |
+| **DiziYou** | 📺 Yabancı Dizi | TR | Türkçe dublaj ve altyazılı yabancı dizi, 1080p Full HD |
+| **DiziGom** | 📺 Yabancı Dizi | TR | Yabancı dizi izle |
+| **Dizipod** | 📺 Yabancı Dizi | TR | Yabancı dizi ve film izle (Türkçe altyazılı) |
 | **SezonlukDizi** | 📺 Yabancı Dizi | TR | Sezonluk ve güncel dizi arşivi |
+| **YabanciDizi** | 📺 Yabancı Dizi | TR | Türkçe altyazılı dizi izle |
+| **AsyaWatch** | 🌏 Asya Dizisi | TR | Asya dizileri ve filmleri |
+| **DMax** | 📺 Belgesel & Dizi | TR | Belgesel ve macera dizileri |
+| **BelgeselX** | 🎞️ Belgesel | TR | 1080p kalitesinde HD belgesel izle |
+| **CizgiMax** | 🧸 Çizgi Film | TR | 700'den fazla çizgi film, reklamsız full HD |
 | **TurkAnime** | 🍙 Anime | TR | Türkiye'nin lider online anime izleme platformu |
 | **AnimeciX** | 🍙 Anime | TR | Geniş arşivli anime ve anime filmleri |
 | **CanliTV** | 📡 Canlı TV | TR | Ulusal TV kanalları ve IPTV akışları (M3U) |
-| **InatBox** | 📡 TV & Spor & Film | TR | Canlı yayınlar, maçlar ve film/dizi kanalları |
-| **RecTV** | 📡 TV & Film | TR | Canlı TV yayınları ve film akışları |
-| **Temel** | 🧩 Şablon | TR | Yeni eklenti yazmak için Türkçe açıklamalı temel şablon |
 
 ---
 
@@ -50,6 +57,8 @@ Cloudstream uygulamasında "Depo Ekle" alanına bir kelime yazdığınızda uygu
 
 ## ⚡ Bağımsız Depo Özelliği
 Bu depo, harici hiçbir üçüncü taraf depoya (Kraptor, Kekik vb.) bağımlı değildir. Tüm eklenti paketleri (`.cs3`) ve kataloglar doğrudan bu deponun kendi sunucusunda (`nefsekor1/cuoldstram`) barındırılmaktadır.
+
+> **Kaynak atfı:** Yeni eklenen sağlayıcılar, [BTVault](https://github.com/baristomruk-max/BTVault) deposunun 6 Kasım 2026 tarihli sağlık raporuyla doğrulanmış, çalışır modüllerinden uyarlanmıştır (orijinal altyapı: [keyiflerolsun](https://github.com/keyiflerolsun) ve hexated sağlayıcıları).
 
 ---
 
@@ -121,23 +130,29 @@ cuoldstram/
 │       ├── gradle-wrapper.jar      # Gradle Wrapper binary
 │       └── gradle-wrapper.properties
 ├── HDFilmCehennemi/                # Film & Dizi sağlayıcısı
-├── Dizilla/                        # Yabancı dizi sağlayıcısı
-├── DiziBox/                        # Yabancı dizi sağlayıcısı
-├── SezonlukDizi/                   # Sezonluk dizi sağlayıcısı
 ├── FilmModu/                       # Film sağlayıcısı
 ├── FilmMakinesi/                   # Film sağlayıcısı
-├── SetFilmIzle/                    # Film sağlayıcısı
+├── FullHDFilmizlesene/             # Film sağlayıcısı
+├── JetFilmizle/                    # Film sağlayıcısı
+├── KultFilmler/                    # Kült film sağlayıcısı
+├── DiziBox/                        # Yabancı dizi sağlayıcısı
+├── DiziMag/                        # Yabancı dizi sağlayıcısı
+├── DiziYou/                        # Yabancı dizi sağlayıcısı
+├── DiziGom/                        # Yabancı dizi sağlayıcısı
+├── Dizipod/                        # Yabancı dizi & film sağlayıcısı
+├── SezonlukDizi/                   # Sezonluk dizi sağlayıcısı
+├── YabanciDizi/                    # Yabancı dizi sağlayıcısı
+├── AsyaWatch/                      # Asya dizileri sağlayıcısı
+├── DMax/                           # Belgesel & macera dizi sağlayıcısı
+├── BelgeselX/                      # Belgesel sağlayıcısı
+├── CizgiMax/                       # Çizgi film sağlayıcısı
 ├── TurkAnime/                      # Anime sağlayıcısı
 ├── AnimeciX/                       # Anime sağlayıcısı
 ├── CanliTV/                        # Canlı IPTV akışları sağlayıcısı
-├── InatBox/                        # Canlı TV & Spor sağlayıcısı
-├── RecTV/                          # Canlı TV & Film sağlayıcısı
-├── Temel/                          # Şablon örnek eklenti
 ├── build.gradle.kts                # Ana Gradle yapılandırması
 ├── settings.gradle.kts             # Eklenti alt modül tanımları
 ├── gradle.properties               # JVM ve AndroidX ayarları
 ├── repo.json                       # Cloudstream depo manifesti
-├── plugins.json                    # Eklenti katalog listesi
 └── gradlew.bat / gradlew           # Gradle derleme betikleri
 ```
 

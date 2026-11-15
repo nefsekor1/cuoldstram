@@ -86,3 +86,17 @@ jobs:
           curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/CanliTV.cs3" || true
           curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/FilmModu.cs3" || true
           curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/TurkAnime.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/AnimeciX.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/AsyaWatch.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/BelgeselX.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/CizgiMax.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/DMax.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/DiziGom.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/DiziMag.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/DiziYou.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/Dizipod.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/FullHDFilmizlesene.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/JetFilmizle.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/KultFilmler.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/SezonlukDizi.cs3" || true
+          curl -s "https://purge.jsdelivr.net/gh/nefsekor1/cuoldstram@builds/YabanciDizi.cs3" || true
