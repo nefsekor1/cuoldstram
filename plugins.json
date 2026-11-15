@@ -1,112 +1,124 @@
 [
-  {
-    "name": "CanliTV",
-    "internalName": "CanliTV",
-    "version": 12,
-    "description": "Canlı TV (Ulusal, Haber, Spor, Belgesel, Çocuk vb.)",
-    "authors": [
-      "fsmnk"
-    ],
-    "language": "tr",
-    "status": 1,
-    "tvTypes": [
-      "Live"
-    ],
-    "iconUrl": "https://www.google.com/s2/favicons?domain=canlitv.me&sz=256",
-    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/CanliTV.cs3",
-    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
-    "apiVersion": 1
-  },
-  {
-    "name": "HDFilmCehennemi",
-    "internalName": "HDFilmCehennemi",
-    "version": 32,
-    "description": "HDFilmCehennemi - Türkiye'nin en popüler film ve dizi izleme sitesi (1080p Rapidrame)",
-    "authors": [
-      "fsmnk"
-    ],
-    "language": "tr",
-    "status": 1,
-    "tvTypes": [
-      "Movie",
-      "TvSeries"
-    ],
-    "iconUrl": "https://www.google.com/s2/favicons?domain=hdfilmcehennemi.nl&sz=256",
-    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/HDFilmCehennemi.cs3",
-    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
-    "apiVersion": 1
-  },
-  {
-    "name": "FilmMakinesi",
-    "internalName": "FilmMakinesi",
-    "version": 46,
-    "description": "FilmMakinesi - En yeni ve en güncel filmler (1080p Full HD)",
-    "authors": [
-      "fsmnk"
-    ],
-    "language": "tr",
-    "status": 1,
-    "tvTypes": [
-      "Movie"
-    ],
-    "iconUrl": "https://www.google.com/s2/favicons?domain=filmmakinesi.to&sz=256",
-    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FilmMakinesi.cs3",
-    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
-    "apiVersion": 1
-  },
-  {
-    "name": "DiziBox",
-    "internalName": "DiziBox",
-    "version": 26,
-    "description": "DiziBOX - Yabancı ve Yerli Popüler Diziler (Türkçe Dublaj & Altyazılı)",
-    "authors": [
-      "fsmnk",
-      "keyiflerolsun"
-    ],
-    "language": "tr",
-    "status": 1,
-    "tvTypes": [
-      "TvSeries"
-    ],
-    "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizibox.live&sz=256",
-    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/DiziBox.cs3",
-    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
-    "apiVersion": 1
-  },
-  {
-    "name": "FilmModu",
-    "internalName": "FilmModu",
-    "version": 16,
-    "description": "FilmModu - HD Film izleme platformu",
-    "authors": [
-      "fsmnk"
-    ],
-    "language": "tr",
-    "status": 1,
-    "tvTypes": [
-      "Movie"
-    ],
-    "iconUrl": "https://www.google.com/s2/favicons?domain=filmmodu.cc&sz=256",
-    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FilmModu.cs3",
-    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
-    "apiVersion": 1
-  },
-  {
-    "name": "TurkAnime",
-    "internalName": "TurkAnime",
-    "version": 15,
-    "description": "Türk Anime TV - Türkiye'nin online anime izleme sitesi",
-    "authors": [
-      "fsmnk"
-    ],
-    "language": "tr",
-    "status": 1,
-    "tvTypes": [
-      "Anime"
-    ],
-    "iconUrl": "https://www.google.com/s2/favicons?domain=turkanime.tv&sz=256",
-    "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/TurkAnime.cs3",
-    "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
-    "apiVersion": 1
-  }
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=canlitv.me&sz=%size%",
+        "fileHash": "sha256-839bbd2e424518bc95257f101ce3efa7a8ad81ebf088c9d4f1944e07b52896a6",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 20403,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "fsmnk"
+        ],
+        "tvTypes": [
+            "Live"
+        ],
+        "version": 12,
+        "internalName": "CanliTV",
+        "description": "Canl\u0131 TV (Ulusal, Haber, Spor, Belgesel, \u00c7ocuk vb.)",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/CanliTV.cs3",
+        "name": "CanliTV"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizibox.live&sz=%size%",
+        "fileHash": "sha256-3b57e1fc48a366e95c2217da5b9688170b652a8e502a93d3b59f36ab8c323fb4",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 30450,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "fsmnk",
+            "keyiflerolsun"
+        ],
+        "tvTypes": [
+            "TvSeries"
+        ],
+        "version": 27,
+        "internalName": "DiziBox",
+        "description": "Yabanc\u0131 Dizi izle, T\u00fcm yabanc\u0131 dizilerin yeni ve eski sezonlar\u0131n\u0131 full hd izleyebilece\u011finiz elit site.",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/DiziBox.cs3",
+        "name": "DiziBox"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=filmmakinesi.to&sz=%size%",
+        "fileHash": "sha256-a8f02c8350be2663baf26519fbd268df4d1e32315209f8035892862f137859b2",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 26827,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "fsmnk"
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 47,
+        "internalName": "FilmMakinesi",
+        "description": "Film Makinesi - En yeni ve en g\u00fcncel filmler",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FilmMakinesi.cs3",
+        "name": "FilmMakinesi"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=filmmodu.cc&sz=%size%",
+        "fileHash": "sha256-0b45ad8762cbd623487e9047fbb9e9adab9ab102d3c0f912c35fb2d1ca18ab90",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 16607,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "fsmnk"
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 16,
+        "internalName": "FilmModu",
+        "description": "FilmModu - HD Film izleme platformu",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FilmModu.cs3",
+        "name": "FilmModu"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=hdfilmcehennemi.nl&sz=%size%",
+        "fileHash": "sha256-c261f6051db6483afa67919284930a7a57648480dd0f61d6619cd806be1d9b31",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 40151,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "fsmnk"
+        ],
+        "tvTypes": [
+            "Movie",
+            "TvSeries"
+        ],
+        "version": 33,
+        "internalName": "HDFilmCehennemi",
+        "description": "HDFilmCehennemi - T\u00fcrkiye'nin en pop\u00fcler film ve dizi izleme sitesi",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/HDFilmCehennemi.cs3",
+        "name": "HDFilmCehennemi"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=turkanime.tv&sz=%size%",
+        "fileHash": "sha256-1bac64f043828d2b05e1cc6cef61e60cd54a6c76e098b3d9240e4c2c78cb83e4",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 18566,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "fsmnk"
+        ],
+        "tvTypes": [
+            "Anime"
+        ],
+        "version": 15,
+        "internalName": "TurkAnime",
+        "description": "T\u00fcrk Anime TV - T\u00fcrkiye'nin Online Anime izleme sitesi.",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/TurkAnime.cs3",
+        "name": "TurkAnime"
+    }
 ]
