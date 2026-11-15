@@ -1,5 +1,67 @@
 [
     {
+        "iconUrl": "https://anm.cx/favicon.ico",
+        "fileHash": "sha256-8bbed86145bdf37f141c8340c88ce9953d9523e2c78e205b78174ad610847816",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 29745,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum"
+        ],
+        "tvTypes": [
+            "Anime"
+        ],
+        "version": 1,
+        "internalName": "AnimeciX",
+        "description": "AnimeciX - Animeleri kesfedebileceginiz paylasim platformu",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/AnimeciX.cs3",
+        "name": "AnimeciX"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=asyawatch.com&sz=%size%",
+        "fileHash": "sha256-97e484c4f451189ef59158d80fb50092c2a64611661b587a8638759c741a7a12",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 32828,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum"
+        ],
+        "tvTypes": [
+            "Movie",
+            "TvSeries"
+        ],
+        "version": 1,
+        "internalName": "AsyaWatch",
+        "description": "AsyaWatch - Asya dizileri ve filmleri",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/AsyaWatch.cs3",
+        "name": "AsyaWatch"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=belgeselx.com&sz=%size%",
+        "fileHash": "sha256-75cd9a9982b888c4bad9c5db55a3eddf0ead6e4a29c085666e78f7d441c45772",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 27701,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum",
+            "keyiflerolsun"
+        ],
+        "tvTypes": [
+            "Documentary"
+        ],
+        "version": 4,
+        "internalName": "BelgeselX",
+        "description": "En yeni belgeseller, t\u00fcrk\u00e7e altyaz\u0131l\u0131 yada dublaj olarak 1080p kalitesinde HD belgesel izle.",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/BelgeselX.cs3",
+        "name": "BelgeselX"
+    },
+    {
         "iconUrl": "https://www.google.com/s2/favicons?domain=canlitv.me&sz=%size%",
         "fileHash": "sha256-839bbd2e424518bc95257f101ce3efa7a8ad81ebf088c9d4f1944e07b52896a6",
         "apiVersion": 1,
@@ -18,6 +80,27 @@
         "description": "Canl\u0131 TV (Ulusal, Haber, Spor, Belgesel, \u00c7ocuk vb.)",
         "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/CanliTV.cs3",
         "name": "CanliTV"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=cizgimax.online&sz=%size%",
+        "fileHash": "sha256-83f105652f907fe7b49c9457522deed698c7530cd8a552184988ed87d33bde08",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 29280,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum",
+            "keyiflerolsun"
+        ],
+        "tvTypes": [
+            "Cartoon"
+        ],
+        "version": 5,
+        "internalName": "CizgiMax",
+        "description": "\u00c7izgiMax ile \u00c7izgi Film izlemek art\u0131k daha kolay, donmadan full hd ve reklams\u0131z bir sitedir, i\u00e7erisinde 700 den fazla \u00e7izgi film olan, Bu site bu i\u015fi profesyonelce yap\u0131yor.",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/CizgiMax.cs3",
+        "name": "CizgiMax"
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizibox.live&sz=%size%",
@@ -39,6 +122,109 @@
         "description": "Yabanc\u0131 Dizi izle, T\u00fcm yabanc\u0131 dizilerin yeni ve eski sezonlar\u0131n\u0131 full hd izleyebilece\u011finiz elit site.",
         "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/DiziBox.cs3",
         "name": "DiziBox"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=dizigom.news&sz=%size%",
+        "fileHash": "sha256-71215566174d940adfe3820309e03eed3470312f84e77c3d84ff88eeffd367ef",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 19184,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum"
+        ],
+        "tvTypes": [
+            "TvSeries"
+        ],
+        "version": 1,
+        "internalName": "DiziGom",
+        "description": "DiziGom - Yabanci dizi izle",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/DiziGom.cs3",
+        "name": "DiziGom"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=dizimag.onl&sz=%size%",
+        "fileHash": "sha256-e4d3c71a0b91f4c4f0732ef149ab05ec19d95f550f6121b2086fe9960ef0f5a4",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 30226,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie"
+        ],
+        "version": 2,
+        "internalName": "DiziMag",
+        "description": "DiziMag - Turkce altyazili yabanci dizi",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/DiziMag.cs3",
+        "name": "DiziMag"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=dizipod.com&sz=%size%",
+        "fileHash": "sha256-5750cf5e1ceea32e6a40e42c0af03c29512fb62d8f1f5c0656be7be04a18d5ce",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 20137,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie"
+        ],
+        "version": 1,
+        "internalName": "Dizipod",
+        "description": "Dizipod - Yabanci dizi ve film izle (Turkce altyazili)",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/Dizipod.cs3",
+        "name": "Dizipod"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.diziyou.co&sz=%size%",
+        "fileHash": "sha256-d86ca87635eba63a2c2aa08e102d59c026048ccf08e04c3af0447c95d6274e85",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 15375,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum",
+            "keyiflerolsun"
+        ],
+        "tvTypes": [
+            "TvSeries"
+        ],
+        "version": 8,
+        "internalName": "DiziYou",
+        "description": "Diziyou en kaliteli T\u00c3\u00bcrk\u00c3\u00a7e dublaj ve altyaz\u00c4\u00b1l\u00c4\u00b1 yabanc\u00c4\u00b1 dizi izleme sitesidir. G\u00c3\u00bcncel ve efsanevi dizileri 1080p Full HD kalitede izlemek i\u00c3\u00a7in hemen t\u00c4\u00b1kla!",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/DiziYou.cs3",
+        "name": "DiziYou"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=dmax.com.tr&sz=%size%",
+        "fileHash": "sha256-75873669482bcf0af8be3de33b74ef6ec7bb965dcdf1783ac3a2ee060de3e96d",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 14139,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum"
+        ],
+        "tvTypes": [
+            "TvSeries"
+        ],
+        "version": 1,
+        "internalName": "DMax",
+        "description": "DMAX - Belgesel ve macera dizileri",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/DMax.cs3",
+        "name": "DMax"
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=filmmakinesi.to&sz=%size%",
@@ -81,6 +267,27 @@
         "name": "FilmModu"
     },
     {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.fullhdfilmizlesene.now&sz=%size%",
+        "fileHash": "sha256-4e7777de3ee4dcc5bb355b875e1bde1fd3ff0a4d3c58e10b778835474f090669",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 35913,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum",
+            "keyiflerolsun"
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 6,
+        "internalName": "FullHDFilmizlesene",
+        "description": "Sinema zevkini evinize kadar getirdik. T\u00fcrkiye'nin lider Film sitesinde, en yeni filmleri Full HD izleyin.",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/FullHDFilmizlesene.cs3",
+        "name": "FullHDFilmizlesene"
+    },
+    {
         "iconUrl": "https://www.google.com/s2/favicons?domain=hdfilmcehennemi.nl&sz=%size%",
         "fileHash": "sha256-c261f6051db6483afa67919284930a7a57648480dd0f61d6619cd806be1d9b31",
         "apiVersion": 1,
@@ -102,6 +309,68 @@
         "name": "HDFilmCehennemi"
     },
     {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=jetfilmizle.app&sz=%size%",
+        "fileHash": "sha256-8fce852f4ef065e24bbce6951efbb8fd82ee875b9c62a3cbdddf392a2083b7b8",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 22190,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum",
+            "keyiflerolsun"
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 21,
+        "internalName": "JetFilmizle",
+        "description": "Binlerce Film \u0130zleme Se\u00e7ene\u011fiyle En \u0130yi Film \u0130zleme Sitesi",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/JetFilmizle.cs3",
+        "name": "JetFilmizle"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=kultfilmler.net&sz=%size%",
+        "fileHash": "sha256-73c65f11e6cf31977d778ccb676ac30d67dfacb3143dc934dc820bf051804e61",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 20326,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum"
+        ],
+        "tvTypes": [
+            "Movie",
+            "TvSeries"
+        ],
+        "version": 1,
+        "internalName": "KultFilmler",
+        "description": "KultFilmler - Ozenle secilmis en iyi filmler",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/KultFilmler.cs3",
+        "name": "KultFilmler"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=sezonlukdizi.cc&sz=%size%",
+        "fileHash": "sha256-5ed860bc0658b6860ca4842fd611828b1dd4812d02399edb27e2c262bf342a65",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 25838,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum"
+        ],
+        "tvTypes": [
+            "TvSeries"
+        ],
+        "version": 2,
+        "internalName": "SezonlukDizi",
+        "description": "SezonlukDizi - Guncel ve eski dizileri en iyi goruntu kalitesiyle izleyin",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/SezonlukDizi.cs3",
+        "name": "SezonlukDizi"
+    },
+    {
         "iconUrl": "https://www.google.com/s2/favicons?domain=turkanime.tv&sz=%size%",
         "fileHash": "sha256-1bac64f043828d2b05e1cc6cef61e60cd54a6c76e098b3d9240e4c2c78cb83e4",
         "apiVersion": 1,
@@ -120,5 +389,26 @@
         "description": "T\u00fcrk Anime TV - T\u00fcrkiye'nin Online Anime izleme sitesi.",
         "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/TurkAnime.cs3",
         "name": "TurkAnime"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=yabancidizi.news&sz=%size%",
+        "fileHash": "sha256-c48176eae6f02184a8e17618c2889158eeb6e80b05fc011c1aea81318a9e4290",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/nefsekor1/cuoldstram",
+        "fileSize": 47889,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            "BTcozum"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie"
+        ],
+        "version": 2,
+        "internalName": "YabanciDizi",
+        "description": "YabanciDizi - Turkce altyazili dizi izle",
+        "url": "https://raw.githubusercontent.com/nefsekor1/cuoldstram/builds/YabanciDizi.cs3",
+        "name": "YabanciDizi"
     }
 ]
